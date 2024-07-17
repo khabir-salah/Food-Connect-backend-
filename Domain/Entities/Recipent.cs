@@ -22,7 +22,6 @@ namespace Domain.Entities
         public string LOcalGovernment { get; set; } = default!;
         public string PostalCode { get; set; } = default!;
         public string? Capacity { get; set; }
-        public Rating? Rating { get; set; } 
         public ICollection<Donation> Donations { get; set; }
     }
 }
