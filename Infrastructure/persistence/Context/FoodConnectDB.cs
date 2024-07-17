@@ -13,12 +13,13 @@ namespace Infrastructure.persistence.Context
         public FoodConnectDB(DbContextOptions<FoodConnectDB> option) : base(option) { }
 
         public DbSet<Donation> Donation => Set<Donation>();
-        public DbSet<Donor> Donor => Set<Donor>();
-        public DbSet<PickUp> PickUp => Set<PickUp>();
-        public DbSet<Rating> Rating => Set<Rating>();
+        public DbSet<Family> Family => Set<Family>();
+        public DbSet<FoodCollection> FoodCollection => Set<FoodCollection>();
+        public DbSet<Manager> Manager => Set<Manager>();
         public DbSet<Recipent> Recipent => Set<Recipent>();
         public DbSet<User> User => Set<User>();
         public DbSet<Role> Role => Set<Role>();
+        public DbSet<Organisation> Organisation => Set<Organisation>();
 
 
     }

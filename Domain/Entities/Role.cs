@@ -11,7 +11,7 @@ namespace Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; } = default!;
         public string Description { get; set; } = default!;
-        public User User { get; set; }
+        public ICollection<User> User { get; set; }
 
     }
 }

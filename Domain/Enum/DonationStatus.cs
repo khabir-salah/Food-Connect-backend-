@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Enum
 {
-    public enum Status
+    public enum DonationStatus
     {
+        pending,
         Available,
-        Scheduled,
-        PickedUp,
-        Delivered
+        Claim,
+        Received
     }
 }

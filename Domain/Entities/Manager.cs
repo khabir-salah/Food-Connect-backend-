@@ -14,7 +14,6 @@ namespace Domain.Entities
         public Guid UserId { get; set; }
         public virtual User User { get; set; }
         public string ProfileImage { get; set; } = default!;
-
         public string? Nin { get; set; }
         public string PhoneNumber { get; set; } = default!;
         public string Address { get; set; } = default!;
