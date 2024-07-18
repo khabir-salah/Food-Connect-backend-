@@ -13,7 +13,6 @@ namespace Domain.Entities
         public Guid UserId { get; set; }
         public virtual User User { get; set; }
         public string ProfileImage { get; set; } = default!;
-
         public ICollection<string?> Nin { get; set; } 
         public int FamilyCount { get; set; }
         public string PhoneNumber { get; set; } = default!;

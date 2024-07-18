@@ -84,6 +84,7 @@ namespace Application.Command
                     PhoneNumber = request.PhoneNumber,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
+                    UserId = user.Id,
                 };
 
                 _familyRepo.Add(family);
