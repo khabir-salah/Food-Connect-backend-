@@ -22,5 +22,28 @@ namespace Infrastructure.persistence.Context
         public DbSet<Organisation> Organisation => Set<Organisation>();
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Role>().HasData(
+                new Role {
+                    Name = "Manager",
+                    Description = "Manages the system of the application",
+                },
+                new Role { 
+                    Name = "Family", 
+                    Description = "Registering on the application as a whole family" 
+                },
+                new Role { Name = "Organisation",
+                            Description = "Registering on the application as a whole Organization e.g NGO"
+                },
+                new Role
+                {
+                    Name = "Recipent",
+                    Description = "Registering on the application as an Individual"
+                }
+                ) ; 
+        }
+
     }
 }

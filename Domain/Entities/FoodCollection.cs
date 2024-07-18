@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class FoodCollection
+    public class FoodCollection : Auditables
     {
-        public Guid Id { get; set; }
         public Guid FamilyId { get; set; }
         public Guid OragizationId { get; set; }
         public Guid RecipentId { get; set; }

@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Donation
+    public class Donation : Auditables
     {
-        public Guid Id { get; set; }
         public Guid FamilyId { get; set; }
         public Guid OragizationId { get; set; }
         public Guid RecipentId { get; set; }

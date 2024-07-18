@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Family
+    public class Family : Auditables
     {
-        public Guid Id { get; set; }
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
         public Guid UserId { get; set; }

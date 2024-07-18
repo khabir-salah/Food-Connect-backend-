@@ -2,7 +2,6 @@
 using Infrastructure.persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Infrastructure.persistence.Repository.Implementation
 {

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Organisation
+    public class Organisation : Auditables
     {
-        public Guid Id { get; set; }
         public string OganisationName { get; set; } = default!;
         public Guid UserId { get; set; }
         public virtual User User { get; set; }
