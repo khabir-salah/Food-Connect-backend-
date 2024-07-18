@@ -86,6 +86,7 @@ namespace Application.Command
                 _userRepo.Add(user);    
                 _recipentRepo.Add(recipent);
                 _recipentRepo.Save();
+                _logger.LogInformation("User Created Successfully");
 
                 return new BaseResponse<RecipientResponseModel>
                 {
