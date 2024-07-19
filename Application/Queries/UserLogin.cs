@@ -19,7 +19,7 @@ namespace Application.Queries
         {
             public string Email { get; set; }
             public string Password { get; set; }
-            public Guid RoleId { get; set; }
+            public string RoleName { get; set; }
             public Guid UserId { get; set; }
         }
 
@@ -51,7 +51,7 @@ namespace Application.Queries
                         {
                             Email = request.Email,
                             Password = request.Password,
-                            RoleId = getUser.RoleId,
+                            RoleName = getUser.Role.Name,
                             UserId = getUser.Id
                         }
                     };
