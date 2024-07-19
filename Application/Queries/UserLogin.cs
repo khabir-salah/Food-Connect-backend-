@@ -40,6 +40,7 @@ namespace Application.Queries
                     };
                 }
 
+
                 var hashPassword = BCrypt.Net.BCrypt.Verify(getUser.Password, request.Password);
                 if(hashPassword)
                 {

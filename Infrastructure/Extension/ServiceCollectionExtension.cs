@@ -1,4 +1,6 @@
-﻿using Infrastructure.persistence.Context;
+﻿using Application.Command;
+using Application.Queries;
+using Infrastructure.persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,12 +14,17 @@ namespace Infrastructure.Extension
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCommands(this IServiceCollection services)
         {
+            return services.AddScoped<CreateFamily>()
+                .AddScoped<CreateManager>()
+                .AddScoped<CreateOrganization>()
+                .AddScoped<CreateRecipient>();
+        }
 
-            return services.AddDbContext<FoodConnectDB>(options => options.UseMySQL(configuration.GetConnectionString("FoodConnectConnection")));
-
-            
+        public static IServiceCollection AddQueries(this IServiceCollection services)
+        {
+            return services.AddScoped<UserLogin>();
         }
     }
 }

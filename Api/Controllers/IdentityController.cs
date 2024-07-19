@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Identity")]
     [ApiController]
     public class IdentityController : ControllerBase
     {
@@ -17,6 +17,8 @@ namespace Api.Controllers
             _mediator = mediator;
         }
 
+
+        [HttpPost("CreateManager")]
         public async Task<IActionResult> CreateManager(CreateManager.ManagerRequestModel request)
         {
             if(!ModelState.IsValid) 
@@ -31,6 +33,8 @@ namespace Api.Controllers
             return Ok(response.Data);
         }
 
+
+        [HttpPost("CreateFamily")]
         public async Task<IActionResult> CreateFamily(CreateFamily.FamilyRequestModel request)
         {
             if (!ModelState.IsValid)
@@ -45,6 +49,9 @@ namespace Api.Controllers
             return Ok(response.Data);
         }
 
+
+
+        [HttpPost("CreateOraganization")]
         public async Task<IActionResult> CreateOrganization(CreateOrganization.OraganizationRequestModel request)
         {
             if (!ModelState.IsValid)
@@ -59,6 +66,8 @@ namespace Api.Controllers
             return Ok(response.Data);
         }
 
+
+        [HttpPost("CreateRecipient")]
         public async Task<IActionResult> CreateRecipient(CreateRecipient.RecipientRequestModel request)
         {
             if (!ModelState.IsValid)
