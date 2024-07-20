@@ -20,7 +20,7 @@ namespace Application.Command
             public string PhoneNumber { get; set; } = default!;
             public string Address { get; set; } = default!;
             public string CacNumber { get; set; } = default!;
-            public string? Capacity { get; set; }
+            public int? Capacity { get; set; }
             public string Email { get; set; } = default!;
             public string Password { get; set; } = default!;
         }
@@ -31,7 +31,7 @@ namespace Application.Command
             public string PhoneNumber { get; set; } = default!;
             public string Address { get; set; } = default!;
             public string CacNumber { get; set; } = default!;
-            public string? Capacity { get; set; }
+            public int? Capacity { get; set; }
             public string Email { get; set; } = default!;
             public Guid RoleId { get; set; }
             public Guid UserId { get; set; }
@@ -91,6 +91,23 @@ namespace Application.Command
                 _organisationRepo.Add(organization);
                 _organisationRepo.Save();
                 _logger.LogInformation("Organization Registration Successfull");
+
+                return new BaseResponse<OraganizationResponseModel>
+                {
+                    Message = "Organization Registration Successfull",
+                    IsSuccessfull = true,
+                    Data = new OraganizationResponseModel
+                    {
+                        Capacity = organization.Capacity,
+                        PhoneNumber = organization.PhoneNumber,
+                        Address = organization.Address,
+                        CacNumber = organization.CacNumber,
+                        Email = user.Email,
+                        OganisationName = organization.OganisationName,
+                        RoleId = getRole.Id,
+                        UserId = user.Id
+                    }
+                };
             }
 
             private bool IsEmailExist(string email)
@@ -98,6 +115,7 @@ namespace Application.Command
                 var check = _userRepo.Get(u => u.Email == email);
                 return check != null ? true : false;
             }
+
         }
     }
 }

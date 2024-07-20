@@ -48,5 +48,6 @@ namespace Domain.Validations
             .WithMessage("Enter a valid postal code.");
 
         }
+
     }
 }

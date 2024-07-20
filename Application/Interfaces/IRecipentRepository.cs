@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    internal interface IRecipentRepository : IGenericRepository<Recipent>
+    public interface IRecipentRepository : IGenericRepository<Recipent>
     {
     }
 }

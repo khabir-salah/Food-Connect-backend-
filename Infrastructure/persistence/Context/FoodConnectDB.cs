@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,9 @@ namespace Infrastructure.persistence.Context
         public DbSet<User> User => Set<User>();
         public DbSet<Role> Role => Set<Role>();
         public DbSet<Organisation> Organisation => Set<Organisation>();
+
+
+       
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,7 +46,10 @@ namespace Infrastructure.persistence.Context
                     Name = "Recipent",
                     Description = "Registering on the application as an Individual"
                 }
-                ) ; 
+                ) ;
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         }
 
     }

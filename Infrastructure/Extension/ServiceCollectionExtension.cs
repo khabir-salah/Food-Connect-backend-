@@ -1,14 +1,13 @@
 ﻿using Application.Command;
 using Application.Queries;
-using Infrastructure.persistence.Context;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Domain.Validations;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Application.Interfaces;
+using Infrastructure.persistence.Repository.Implementation;
+using Domain.Entities;
+
 
 namespace Infrastructure.Extension
 {
@@ -16,15 +15,42 @@ namespace Infrastructure.Extension
     {
         public static IServiceCollection AddCommands(this IServiceCollection services)
         {
-            return services.AddScoped<CreateFamily>()
-                .AddScoped<CreateManager>()
-                .AddScoped<CreateOrganization>()
-                .AddScoped<CreateRecipient>();
+            return services.AddMediatR(cfg =>
+            cfg
+            .RegisterServicesFromAssemblyContaining<UserLogin>());
+           
         }
 
-        public static IServiceCollection AddQueries(this IServiceCollection services)
+      
+
+        public static IServiceCollection AddValidations(this IServiceCollection services)
         {
-            return services.AddScoped<UserLogin>();
+            return services.AddFluentValidation(fv =>
+            
+                fv.RegisterValidatorsFromAssemblyContaining<FamilyValidation>()
+               
+            );
         }
+
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        {
+            return services.AddScoped<IDonationRepository, DonationRepository>()
+                .AddScoped<IFamilyRepository>()
+            .AddScoped<IFoodCollectionRepository>()
+                .AddScoped<IManagerRepository>()
+                .AddScoped<IOragnisationRepository>()
+                .AddScoped<IRecipentRepository>()
+                .AddScoped<IRoleRepository>()
+                .AddScoped<IUserRepository>();
+        }
+        //.RegisterServicesFromAssemblyContaining<CreateFamily>()
+        //    .RegisterServicesFromAssemblyContaining<CreateManager>()
+        //    .RegisterServicesFromAssemblyContaining<CreateOrganization>()
+        //    .RegisterServicesFromAssemblyContaining<CreateRecipient>()
+
+         //.RegisterValidatorsFromAssemblyContaining<ManagerValidator>()
+         //       .RegisterValidatorsFromAssemblyContaining<OrganisationValidation>()
+         //       .RegisterValidatorsFromAssemblyContaining<RecipientValidator>()
+         //       .RegisterValidatorsFromAssemblyContaining<UserValidator>()
     }
 }

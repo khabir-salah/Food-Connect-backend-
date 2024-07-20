@@ -1,4 +1,7 @@
 
+using Application.Queries;
+using FluentValidation.AspNetCore;
+using Infrastructure.Extension;
 using Infrastructure.persistence.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +17,13 @@ namespace Api
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("FoodConnectConnection");
             // Add services to the container.
-
             builder.Services.AddControllers();
+            builder.Services.AddValidations();
+            builder.Services.AddCommands();
+            builder.Services.AddRepositories();
+
+
+            builder.Services.AddMvc().AddFluentValidation();
             builder.Services.AddDbContext<FoodConnectDB>( option => 
             option.UseMySql( connectionString, ServerVersion.AutoDetect( connectionString ) ) );
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

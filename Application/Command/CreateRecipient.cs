@@ -38,12 +38,12 @@ namespace Application.Command
             private readonly IRoleRepository _roleRepo;
             private readonly ILogger<Handler> _logger;
             private readonly IRecipentRepository _recipentRepo;
-            public Handler(IRecipentRepository recipentRepo, IUserRepository userRepo, IRoleRepository roleRepo, ILogger<Handler> logger)
+            public Handler(IUserRepository userRepo, IRoleRepository roleRepo, ILogger<Handler> logger, IRecipentRepository recipentRepo)
             {
-                _recipentRepo = recipentRepo;
                 _userRepo = userRepo;
                 _roleRepo = roleRepo;
                 _logger = logger;
+                _recipentRepo = recipentRepo;
             }
 
             public async Task<BaseResponse<RecipientResponseModel>> Handle(RecipientRequestModel request, CancellationToken cancellationToken)

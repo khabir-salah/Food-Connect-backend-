@@ -41,6 +41,8 @@ namespace Domain.Validations
             .WithMessage("Postal code is required.")
             .Matches(@"^\d{6}$")
             .WithMessage("Enter a valid postal code.");
+
+            RuleFor(recipent => recipent.Nin).NotEmpty().MinimumLength(11);
         }
     }
 }
