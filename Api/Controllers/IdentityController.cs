@@ -10,9 +10,9 @@ namespace Api.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
 
-        public IdentityController(Mediator mediator)
+        public IdentityController(IMediator mediator)
         {
             _mediator = mediator;
         }

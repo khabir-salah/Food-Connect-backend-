@@ -69,7 +69,8 @@ namespace Application.Command
                     };
                 }
 
-                var getRole = await _roleRepo.Get(r => r.Name == "Family");
+                var getRole = await _roleRepo.GetAll();
+                var role = getRole.Where(r => r.Name == "Organisation").FirstOrDefault();
 
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
@@ -78,7 +79,7 @@ namespace Application.Command
                 {
                     Email = request.Email,
                     Password = hashPassword,
-                    RoleId = getRole.Id,
+                    RoleId = role.Id,
                 };
 
                 var family = new Family

@@ -54,14 +54,17 @@ namespace Application.Command
                         Message = "Manager already Exist"
                     };
                 }
-                var getRole = await _roleRepo.Get(r => r.Name == "Manager");
+
+                var getRole = await _roleRepo.GetAll();
+                var role = getRole.Where(r => r.Name == "Organisation").FirstOrDefault();
+
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Email,salt);
                 var user = new User
                 {
                     Email = request.Email,
                     Password = hashPassword,
-                    RoleId = getRole.Id,
+                    RoleId = role.Id,
                 };
                 var manager = new Manager
                 {
