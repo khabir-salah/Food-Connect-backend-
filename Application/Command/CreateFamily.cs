@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Queries;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -36,6 +37,9 @@ namespace Application.Command
             public Guid RoleId { get; set; }
             public Guid UserId { get; set; }
         }
+
+
+
 
         public class Handler : IRequestHandler<FamilyRequestModel, BaseResponse<FamilyResponseModel>>
         {
