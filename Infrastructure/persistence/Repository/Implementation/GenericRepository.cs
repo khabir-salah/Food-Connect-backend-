@@ -8,10 +8,11 @@ namespace Infrastructure.persistence.Repository.Implementation
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly FoodConnectDB _context;
-        public DbSet<T> Entity => _context.Set<T>();
+        private readonly DbSet<T> Entity;
         public GenericRepository(FoodConnectDB context)
         {
             _context = context;
+            Entity = context.Set<T>();
         }
         public void Delete(T entity)
         {
@@ -21,12 +22,15 @@ namespace Infrastructure.persistence.Repository.Implementation
 
         public async Task<T?> Get(Expression<Func<T, bool>> predicate)
         {
-            return await _context.FindAsync<T>(predicate);
+            return await  _context.Set<T>().FirstOrDefaultAsync(predicate);
+            //return await Entity.FirstOrDefaultAsync(predicate);
         }
+
 
         public async Task<List<T>> GetAll()
         {
-            return  await this.Entity.ToListAsync();
+            return await _context.Set<T>().ToListAsync();
+            //return  await Entity.ToListAsync();
         }
 
         public void Save()

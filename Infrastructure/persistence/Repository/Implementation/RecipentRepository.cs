@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.persistence.Repository.Implementation
 {
-    public class RoleRepository : GenericRepository<Role>, IRoleRepository
+    public class RecipentRepository : GenericRepository<Recipent>, IRecipentRepository
     {
-        public RoleRepository(FoodConnectDB context) : base(context)
+        public RecipentRepository(FoodConnectDB context) : base(context)
         {
         }
-         
-       
     }
 }
