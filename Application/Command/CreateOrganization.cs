@@ -65,17 +65,17 @@ namespace Application.Command
                     };
                 }
 
-                var getRole = await _roleRepo.GetAll();
-                var role = getRole.Where(r => r.Name == "Organisation").FirstOrDefault();
 
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
+
+                var getRole = await _roleRepo.Get(r => r.Name == "Organisation");
 
                 var user = new User
                 {
                     Email = request.Email,
                     Password = hashPassword,
-                    RoleId = role.Id,
+                    RoleId = getRole.Id,
                 };
 
                 var organization = new Organisation
@@ -105,7 +105,7 @@ namespace Application.Command
                         CacNumber = organization.CacNumber,
                         Email = user.Email,
                         OganisationName = organization.OganisationName,
-                        RoleId = role.Id,
+                        RoleId = getRole.Id,
                         UserId = user.Id
                     }
                 };

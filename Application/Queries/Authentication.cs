@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,6 +14,11 @@ namespace Application.Queries
 {
     public class Authentication
     {
+        private readonly IConfiguration _configuration;
+        public Authentication(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public class TokenClaims
         {
@@ -21,28 +27,32 @@ namespace Application.Queries
             public string Role { get; set; } = null!;
         }
 
-        public static string  GenerateJWTAuthetication(LoginResponseModel request)
+        public  string  GenerateJWTAuthetication(string email, Guid role, Guid Id)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, request.UserId.ToString()),
-                new Claim(ClaimTypes.Email, request.Email),
-                new Claim(ClaimTypes.Role, request.RoleName)
+                new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role.ToString())
             };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(Convert.ToString(ConfigurationManager.AppSettings["config:JwtKey"])));
+             Encoding.UTF8.GetBytes(_configuration["config:JwtKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                Convert.ToString(ConfigurationManager.AppSettings["config:JwtIssuer"]),
-                Convert.ToString(ConfigurationManager.AppSettings["config:JwtAudience"]),
+                (_configuration["config:JwtIssuer"]),
+                (_configuration["config:JwtAudience"]),
                 claims,
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: creds
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+
+
         public static TokenClaims  ValidateToken(string token)
         {
             if (token == null)
