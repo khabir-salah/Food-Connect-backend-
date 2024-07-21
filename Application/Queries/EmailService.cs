@@ -3,15 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+
 
 namespace Application.Queries
 {
     public class EmailService
     {
-        public class Handler
-        {
+       
             public async Task SendEmailConfirmationAsync(string email, string callbackUrl)
             {
                 var message = new MimeMessage();
@@ -23,13 +22,12 @@ namespace Application.Queries
                     Text = $"Please confirm your account by clicking this link: {callbackUrl}"
                 };
 
-                using var client = new SmtpClient();
+                using var client = new MailKit.Net.Smtp.SmtpClient();
                 await client.ConnectAsync("smtp.mailtrap.io", 587, false);
                 await client.AuthenticateAsync("username", "password");
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
-        }
 
 
        
