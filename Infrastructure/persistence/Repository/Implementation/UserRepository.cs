@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,13 @@ namespace Infrastructure.persistence.Repository.Implementation
     {
         public UserRepository(FoodConnectDB context) : base(context)
         {
+        }
+
+        public async Task SavePasswordResetTokenAsync(User user, string token)
+        {
+            user.PasswordResetToken = token;
+            user.PasswordExpireTime = DateTime.UtcNow.AddHours(1);
+            Save();
         }
     }
 }

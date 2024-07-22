@@ -30,6 +30,22 @@ namespace Application.Queries
             }
 
 
-       
+        public async Task SendPasswordResetEmailAsync(string email, string callbackUrl)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("AppName", "no-reply@appname.com"));
+            message.To.Add(new MailboxAddress("", email));
+            message.Subject = "Reset Password";
+            message.Body = new TextPart("plain")
+            {
+                Text = $"Please reset your password by clicking here: {callbackUrl}"
+            };
+
+            using var client = new MailKit.Net.Smtp.SmtpClient();
+            await client.ConnectAsync("smtp.mailtrap.io", 587, false);
+            await client.AuthenticateAsync("username", "password");
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
     }
 }

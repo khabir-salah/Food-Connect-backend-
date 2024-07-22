@@ -31,24 +31,29 @@ namespace Infrastructure.persistence.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Role>().HasData(
                 new Role {
+                    Id = Guid.NewGuid(),
                     Name = "Manager",
                     Description = "Manages the system of the application",
                 },
-                new Role { 
+                new Role {
+                    Id = Guid.NewGuid(),
                     Name = "Family", 
                     Description = "Registering on the application as a whole family" 
                 },
-                new Role { Name = "Organisation",
+                new Role { 
+                    Id = Guid.NewGuid(),
+                    Name = "Organisation",
                             Description = "Registering on the application as a whole Organization e.g NGO"
                 },
                 new Role
                 {
+                    Id = Guid.NewGuid(),
                     Name = "Recipent",
                     Description = "Registering on the application as an Individual"
                 }
                 ) ;
 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }
 

@@ -1,5 +1,8 @@
 
 using Application.Queries;
+using Asp.Versioning;
+using Domain.Validations;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Extension;
 using Infrastructure.persistence.Context;
@@ -15,12 +18,25 @@ namespace Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Logging.ClearProviders().AddConsole();
             var connectionString = builder.Configuration.GetConnectionString("FoodConnectConnection");
             // Add services to the container.
-            builder.Services.AddControllers();
-            builder.Services.AddValidations();
-            builder.Services.AddCommands();
             builder.Services.AddRepositories();
+            builder.Services.AddMediateR();
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddValidatorsFromAssemblyContaining<FamilyValidation>();
+            builder.Services.AddApiVersioning(setup =>
+            {
+                setup.ReportApiVersions = true;
+            }).AddMvc();
+            builder.Services.AddApiVersioning(setup =>
+            {
+                setup.DefaultApiVersion = new ApiVersion(1, 0);
+                setup.AssumeDefaultVersionWhenUnspecified = true; 
+                setup.ReportApiVersions = true;
+            }).AddMvc();
+            builder.Services.AddControllers();
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 
             builder.Services.AddMvc().AddFluentValidation();
@@ -34,9 +50,9 @@ namespace Api
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                    ValidIssuer = builder.Configuration["config:JwtIssuer"],
+                    ValidAudience = builder.Configuration["config:JwtAudience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["config:JwtKey"]))
                 };
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FoodConnectDB))]
-    [Migration("20240717200212_second migration")]
-    partial class secondmigration
+    [Migration("20240720215147_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,11 +180,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
@@ -192,7 +190,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("LOcalGovernment")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
@@ -203,15 +200,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ProfileImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("UserId")
@@ -238,8 +232,8 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Capacity")
-                        .HasColumnType("longtext");
+                    b.Property<int?>("Capacity")
+                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -286,8 +280,8 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Capacity")
-                        .HasColumnType("longtext");
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -349,6 +343,32 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cd1a1c3b-baf6-479b-95a0-5cd1d2b44078"),
+                            Description = "Manages the system of the application",
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("b93a4027-afd8-4d92-bb8d-50dd9a286884"),
+                            Description = "Registering on the application as a whole family",
+                            Name = "Family"
+                        },
+                        new
+                        {
+                            Id = new Guid("eedf11d7-cb13-4864-97f9-a8da3299c37a"),
+                            Description = "Registering on the application as a whole Organization e.g NGO",
+                            Name = "Organisation"
+                        },
+                        new
+                        {
+                            Id = new Guid("328874d6-1262-425f-8a1c-6c5198c5f303"),
+                            Description = "Registering on the application as an Individual",
+                            Name = "Recipent"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -356,10 +376,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .IsRequired()

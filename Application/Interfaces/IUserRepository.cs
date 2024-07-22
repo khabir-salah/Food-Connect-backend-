@@ -9,5 +9,6 @@ namespace Application.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {
+        Task SavePasswordResetTokenAsync(User user, string token);
     }
 }
