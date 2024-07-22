@@ -1,32 +1,83 @@
 ﻿using Application.Features.DTOs;
+using Application.Features.Interfaces.IServices;
 using Domain.Entities;
 using Domain.Enum;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+
 using static Application.Features.DTOs.CreateDonationCommandModel;
 
 namespace Application.Features.Command.Create
 {
     public class CreateDonation
     {
-        public class DonationRequestModel : IRequest<BaseResponse<DonationResponseModel>>
+        
+        public class Handler : IRequestHandler<CreateDonationCommand, BaseResponse<string>>
         {
-            
-        }
-
-        public class DonationResponseModel
-        {
-            public class Handler : IRequestHandler<CreateDonationCommand, BaseResponse<CreateDonationResponseCommand>>
+            private readonly ICurrentUser _currentUser;
+            public Handler(ICurrentUser currentUser)
             {
-                public Task<BaseResponse<CreateDonationResponseCommand>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
+                _currentUser = currentUser;
+            }
+            public async Task<BaseResponse<string>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
+            {
+                string primaryImageUrl = await SaveFileAsync(request.PrimaryImageUrl);
+                var imageUrls = new List<string>();
+
+                if (request.DonationImages != null)
                 {
-                    
+                    foreach (var image in request.DonationImages)
+                    {
+                        string imageUrl = await SaveFileAsync(image);
+                        imageUrls.Add(imageUrl);
+                    }
                 }
+                var user = await _currentUser.LoggedInUser();
+
+                var donation = new Donation
+                {
+                    Quantity = request.Quantity,
+                    PickUpTime = request.PickUpTime,
+                    ExpirationDate = request.ExpirationDate,
+                    FoodDetails = request.FoodDetails,
+                    PrimaryImageUrl = primaryImageUrl,
+                    Images = imageUrls,
+                    PickUpLocation = request.PickUpLocation,
+                    Status = DonationStatus.pending,
+                    UserId = user.Id
+                };
+
+                return new BaseResponse<string>
+                {
+                    IsSuccessfull = true,
+                    Message = "Donation created successfully",
+                };
+            }
+            private async Task<string> SaveFileAsync(IFormFile file)
+            {
+                if (file == null || file.Length == 0)
+                    return string.Empty;
+
+                var uploadDir = "uploads";
+                var filePath = Path.Combine("DonationImages", uploadDir);
+
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                var fullPath = Path.Combine(filePath, uniqueFileName);
+
+                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                return $"/{uploadDir}/{uniqueFileName}";
             }
         }
+
+
     }
 }

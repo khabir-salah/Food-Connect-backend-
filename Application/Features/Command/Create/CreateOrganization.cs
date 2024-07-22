@@ -1,5 +1,5 @@
 ﻿using Application.Features.DTOs;
-using Application.Features.Interfaces;
+using Application.Features.Interfaces.IRepositries;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
