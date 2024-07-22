@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Queries;
+﻿using Application.Features.DTOs;
+using Application.Features.Interfaces;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -9,39 +9,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Application.Command.CreateRecipient;
+using static Application.Features.Command.Create.CreateRecipient;
+using static Application.Features.DTOs.CreateFamilyCommandModel;
 
-namespace Application.Command
+namespace Application.Features.Command.Create
 {
     public class CreateFamily
     {
-        public class FamilyRequestModel : IRequest<BaseResponse<FamilyResponseModel>>
-        {
-            public string FirstName { get; set; } = default!;
-            public string LastName { get; set; } = default!;
-            public int FamilyCount { get; set; }
-            public string PhoneNumber { get; set; } = default!;
-            public string Address { get; set; } = default!;
-            public string Email { get; set; } = default!;
-            public string Password { get; set; } = default!;
-        }
-
-        public class FamilyResponseModel
-        {
-            public string FirstName { get; set; } = default!;
-            public string LastName { get; set; } = default!;
-            public int FamilyCount { get; set; }
-            public string PhoneNumber { get; set; } = default!;
-            public string Address { get; set; } = default!;
-            public string Email { get; set; } = default!;
-            public Guid RoleId { get; set; }
-            public Guid UserId { get; set; }
-        }
 
 
-
-
-        public class Handler : IRequestHandler<FamilyRequestModel, BaseResponse<FamilyResponseModel>>
+        public class Handler : IRequestHandler<CreateFamilyCommand, BaseResponse<CreateFamilyResponseCommand>>
         {
             private readonly IUserRepository _userRepo;
             private readonly IRoleRepository _roleRepo;
@@ -56,16 +33,16 @@ namespace Application.Command
                 _familyRepo = familyRepo;
             }
 
-            public async Task<BaseResponse<FamilyResponseModel>> Handle(FamilyRequestModel request, CancellationToken cancellationToken)
+            public async Task<BaseResponse<CreateFamilyResponseCommand>> Handle(CreateFamilyCommand request, CancellationToken cancellationToken)
             {
                 var checkFamily = IsEmailExist(request.Email);
                 if (!checkFamily)
                 {
-                    return new BaseResponse<FamilyResponseModel>
+                    return new BaseResponse<CreateFamilyResponseCommand>
                     {
                         Data = null,
                         IsSuccessfull = false,
-                        Message = "Family Registration Failed", 
+                        Message = "Family Registration Failed",
                     };
                 }
 
@@ -84,7 +61,6 @@ namespace Application.Command
 
                 var family = new Family
                 {
-                    Address = request.Address,
                     FamilyCount = request.FamilyCount,
                     PhoneNumber = request.PhoneNumber,
                     FirstName = request.FirstName,
@@ -97,21 +73,11 @@ namespace Application.Command
                 _familyRepo.Save();
                 _logger.LogInformation("Family Registration Successfull");
 
-                return new BaseResponse<FamilyResponseModel>
+                return new BaseResponse<CreateFamilyResponseCommand>
                 {
                     IsSuccessfull = true,
                     Message = "Family Registration Successfull",
-                    Data = new FamilyResponseModel
-                    {
-                        Address = family.Address,
-                        Email = user.Email,
-                        FamilyCount = family.FamilyCount,
-                        FirstName = family.FirstName,
-                        LastName = family.LastName,
-                        PhoneNumber = family.PhoneNumber,
-                        RoleId = user.RoleId,
-                        UserId = user.Id
-                    }
+                    Data = new CreateFamilyResponseCommand(user.Id, family.Id, user.RoleId, user.Email, family.FirstName)
                 };
             }
 

@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Queries;
+﻿using Application.Features.DTOs;
+using Application.Features.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -8,9 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Application.Command.CreateFamily;
+using static Application.Features.Command.Create.CreateFamily;
+using static Application.Features.DTOs.CreateOrganizationCommandModel;
 
-namespace Application.Command
+namespace Application.Features.Command.Create
 {
     public class CreateOrganization
     {
@@ -37,7 +38,7 @@ namespace Application.Command
             public Guid UserId { get; set; }
         }
 
-        public class Handler : IRequestHandler<OraganizationRequestModel, BaseResponse<OraganizationResponseModel>>
+        public class Handler : IRequestHandler<CreateOrganizationCommand, BaseResponse<CreateOragnizationResponseCommand>>
         {
             private readonly IUserRepository _userRepo;
             private readonly IRoleRepository _roleRepo;
@@ -52,12 +53,12 @@ namespace Application.Command
                 _organisationRepo = organisationRepo;
             }
 
-            public async Task<BaseResponse<OraganizationResponseModel>> Handle(OraganizationRequestModel request, CancellationToken cancellationToken)
+            public async Task<BaseResponse<CreateOragnizationResponseCommand>> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
             {
                 var checkOrganization = IsEmailExist(request.Email);
                 if (!checkOrganization)
                 {
-                    return new BaseResponse<OraganizationResponseModel>
+                    return new BaseResponse<CreateOragnizationResponseCommand>
                     {
                         Data = null,
                         IsSuccessfull = false,
@@ -80,7 +81,6 @@ namespace Application.Command
 
                 var organization = new Organisation
                 {
-                    Address = request.Address,
                     CacNumber = request.CacNumber,
                     Capacity = request.Capacity,
                     PhoneNumber = request.PhoneNumber,
@@ -93,16 +93,12 @@ namespace Application.Command
                 _organisationRepo.Save();
                 _logger.LogInformation("Organization Registration Successfull");
 
-                return new BaseResponse<OraganizationResponseModel>
+                return new BaseResponse<CreateOragnizationResponseCommand>
                 {
                     Message = "Organization Registration Successfull",
                     IsSuccessfull = true,
-                    Data = new OraganizationResponseModel
+                    Data = new CreateOragnizationResponseCommand
                     {
-                        Capacity = organization.Capacity,
-                        PhoneNumber = organization.PhoneNumber,
-                        Address = organization.Address,
-                        CacNumber = organization.CacNumber,
                         Email = user.Email,
                         OganisationName = organization.OganisationName,
                         RoleId = getRole.Id,

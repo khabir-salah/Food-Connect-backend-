@@ -1,34 +1,17 @@
-﻿using Application.Interfaces;
-using Application.Queries;
+﻿using Application.Features.DTOs;
+using Application.Features.Interfaces;
 using BCrypt.Net;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using static Application.Features.DTOs.CreateManagerCommandModel;
 
-namespace Application.Command
+namespace Application.Features.Command.Create
 {
     public class CreateManager
     {
-        public class ManagerRequestModel : IRequest<BaseResponse<ManagerResponseModel>>
-        {
-            public string FirstName { get; set; } = default!;
-            public string LastName { get; set; } = default!;
-            public string Email { get; set; } = default!;
-            public string Password { get; set; } = default!;
-        }
 
-
-        public class ManagerResponseModel
-        {
-            public Guid Id { get; set; }
-            public string FirstName { get; set; } = default!;
-            public string LastName { get; set; } = default!;
-            public string Email { get; set; } = default!;
-            public Guid RoleId { get; set; }
-            public Guid UserId { get; set; }
-        }
-
-        public class Handler : IRequestHandler<ManagerRequestModel, BaseResponse<ManagerResponseModel>>
+        public class Handler : IRequestHandler<CreateManagerCommand, BaseResponse<CreateManagerResponseCommand>>
         {
             private readonly IManagerRepository _managerRepo;
             private readonly IUserRepository _userRepo;
@@ -42,12 +25,12 @@ namespace Application.Command
                 _logger = logger;
             }
 
-            public async Task<BaseResponse<ManagerResponseModel>> Handle(ManagerRequestModel request, CancellationToken cancellationToken)
+            public async Task<BaseResponse<CreateManagerResponseCommand>> Handle(CreateManagerCommand request, CancellationToken cancellationToken)
             {
                 var isManagerExist = IsManagerExist(request.Email);
                 if (!isManagerExist)
                 {
-                    return new BaseResponse<ManagerResponseModel>
+                    return new BaseResponse<CreateManagerResponseCommand>
                     {
                         Data = null,
                         IsSuccessfull = false,
@@ -57,7 +40,7 @@ namespace Application.Command
 
 
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
-                var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Email,salt);
+                var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Email, salt);
 
                 var getRole = await _roleRepo.Get(r => r.Name == "Organisation");
 
@@ -77,16 +60,15 @@ namespace Application.Command
                 _managerRepo.Add(manager);
                 _managerRepo.Save();
                 _logger.LogInformation("Successfully Created Manager");
-                return new BaseResponse<ManagerResponseModel>
+                return new BaseResponse<CreateManagerResponseCommand>
                 {
-                    Data = new ManagerResponseModel
+                    Data = new CreateManagerResponseCommand
                     {
                         Id = manager.Id,
                         Email = user.Email,
-                        FirstName = manager.FirstName,
-                        LastName = manager.LastName,
                         RoleId = user.RoleId,
                         UserId = user.Id,
+                        FirstName = request.FirstName,
                     },
                     Message = "Successfully Created Manager",
                     IsSuccessfull = true

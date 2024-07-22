@@ -22,7 +22,7 @@ namespace Api
             var connectionString = builder.Configuration.GetConnectionString("FoodConnectConnection");
             // Add services to the container.
             builder.Services.AddRepositories();
-            builder.Services.AddMediateR();
+            builder.Services.AddMediateRs();
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssemblyContaining<FamilyValidation>();
             builder.Services.AddApiVersioning(setup =>

@@ -1,38 +1,17 @@
-﻿using Application.Interfaces;
-using Application.Queries;
+﻿using Application.Features.DTOs;
+using Application.Features.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using static Application.Features.DTOs.CreateRecipientCommandModel;
 
 
-namespace Application.Command
+namespace Application.Features.Command.Create
 {
     public class CreateRecipient
     {
-        public class RecipientRequestModel : IRequest<BaseResponse<RecipientResponseModel>>
-        {
-            public string FirstName { get; set; } = default!;
-            public string LastName { get; set; } = default!;
-            public string PhoneNumber { get; set; } = default!;
-            public string Address { get; set; } = default!;
-            public string Nin { get; set; }
-            public string Email { get; set; } = default!;
-            public string Password { get; set; } = default!;
-        }
 
-        public class RecipientResponseModel
-        {
-            public string FirstName { get; set; } = default!;
-            public string LastName { get; set; } = default!;
-            public string PhoneNumber { get; set; } = default!;
-            public string Address { get; set; } = default!;
-            public string Nin { get; set; }
-            public string Email { get; set; } = default!;
-            public Guid RoleId { get; set; }
-            public Guid UserId { get; set; }
-        }
-
-        public class Handler : IRequestHandler<RecipientRequestModel, BaseResponse<RecipientResponseModel>>
+        public class Handler : IRequestHandler<CreateRecipientCommand, BaseResponse<CreateRecpientResponseCommand>>
         {
             private readonly IUserRepository _userRepo;
             private readonly IRoleRepository _roleRepo;
@@ -46,12 +25,12 @@ namespace Application.Command
                 _recipentRepo = recipentRepo;
             }
 
-            public async Task<BaseResponse<RecipientResponseModel>> Handle(RecipientRequestModel request, CancellationToken cancellationToken)
+            public async Task<BaseResponse<CreateRecpientResponseCommand>> Handle(CreateRecipientCommand request, CancellationToken cancellationToken)
             {
                 var checkRecipent = IsEmailExist(request.Email);
                 if (!checkRecipent)
                 {
-                    return new BaseResponse<RecipientResponseModel>
+                    return new BaseResponse<CreateRecpientResponseCommand>
                     {
                         Data = null,
                         IsSuccessfull = false,
@@ -77,28 +56,23 @@ namespace Application.Command
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Nin = request.Nin,
-                    Address = request.Address,
                     UserId = user.Id,
                     PhoneNumber = request.PhoneNumber,
                 };
-                _userRepo.Add(user);    
+                _userRepo.Add(user);
                 _recipentRepo.Add(recipent);
                 _recipentRepo.Save();
                 _logger.LogInformation("User Created Successfully");
 
-                return new BaseResponse<RecipientResponseModel>
+                return new BaseResponse<CreateRecpientResponseCommand>
                 {
                     IsSuccessfull = true,
                     Message = "User Created Successfully",
-                    Data = new RecipientResponseModel
+                    Data = new CreateRecpientResponseCommand
                     {
                         Email = user.Email,
-                        Address = recipent.Address,
                         FirstName = recipent.FirstName,
-                        LastName= recipent.LastName,
-                        Nin = recipent.Nin,
-                        PhoneNumber= recipent.PhoneNumber,
-                        RoleId= user.RoleId,
+                        RoleId = user.RoleId,
                         UserId = recipent.UserId
                     }
                 };
@@ -107,7 +81,7 @@ namespace Application.Command
             private bool IsEmailExist(string email)
             {
                 var check = _userRepo.Get(u => u.Email == email);
-                return check != null? true: false;
+                return check != null ? true : false;
             }
         }
     }
