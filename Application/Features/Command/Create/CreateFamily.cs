@@ -1,15 +1,9 @@
 ﻿using Application.Features.DTOs;
 using Application.Features.Interfaces.IRepositries;
 using Domain.Entities;
-using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Application.Features.Command.Create.CreateRecipient;
+
 using static Application.Features.DTOs.CreateFamilyCommandModel;
 
 namespace Application.Features.Command.Create
@@ -35,8 +29,8 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateFamilyResponseCommand>> Handle(CreateFamilyCommand request, CancellationToken cancellationToken)
             {
-                var checkFamily = IsEmailExist(request.Email);
-                if (!checkFamily)
+                var checkFamily = await _userRepo.IsEmailExist(request.Email);
+                if (checkFamily)
                 {
                     return new BaseResponse<CreateFamilyResponseCommand>
                     {
@@ -81,11 +75,6 @@ namespace Application.Features.Command.Create
                 };
             }
 
-            private bool IsEmailExist(string email)
-            {
-                var check = _userRepo.Get(u => u.Email == email);
-                return check != null ? true : false;
-            }
         }
     }
 }

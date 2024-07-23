@@ -3,40 +3,13 @@ using Application.Features.Interfaces.IRepositries;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Application.Features.Command.Create.CreateFamily;
+
 using static Application.Features.DTOs.CreateOrganizationCommandModel;
 
 namespace Application.Features.Command.Create
 {
     public class CreateOrganization
     {
-        public class OraganizationRequestModel : IRequest<BaseResponse<OraganizationResponseModel>>
-        {
-            public string OganisationName { get; set; } = default!;
-            public string PhoneNumber { get; set; } = default!;
-            public string Address { get; set; } = default!;
-            public string CacNumber { get; set; } = default!;
-            public int? Capacity { get; set; }
-            public string Email { get; set; } = default!;
-            public string Password { get; set; } = default!;
-        }
-
-        public class OraganizationResponseModel
-        {
-            public string OganisationName { get; set; } = default!;
-            public string PhoneNumber { get; set; } = default!;
-            public string Address { get; set; } = default!;
-            public string CacNumber { get; set; } = default!;
-            public int? Capacity { get; set; }
-            public string Email { get; set; } = default!;
-            public Guid RoleId { get; set; }
-            public Guid UserId { get; set; }
-        }
 
         public class Handler : IRequestHandler<CreateOrganizationCommand, BaseResponse<CreateOragnizationResponseCommand>>
         {
@@ -55,8 +28,8 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateOragnizationResponseCommand>> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
             {
-                var checkOrganization = IsEmailExist(request.Email);
-                if (!checkOrganization)
+                var checkOrganization = await _userRepo.IsEmailExist(request.Email);
+                if (checkOrganization)
                 {
                     return new BaseResponse<CreateOragnizationResponseCommand>
                     {
@@ -107,12 +80,7 @@ namespace Application.Features.Command.Create
                 };
             }
 
-            private bool IsEmailExist(string email)
-            {
-                var check = _userRepo.Get(u => u.Email == email);
-                return check != null ? true : false;
-            }
-
+           
         }
     }
 }

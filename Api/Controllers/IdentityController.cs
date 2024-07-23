@@ -74,7 +74,7 @@ namespace Api.Controllers
 
 
         [HttpPost("Register-Oraganization")]
-        public async Task<IActionResult> CreateOrganization(CreateOrganization.OraganizationRequestModel request)
+        public async Task<IActionResult> CreateOrganization(CreateOrganizationCommandModel.CreateOrganizationCommand request)
         {
             if (!ModelState.IsValid)
             {

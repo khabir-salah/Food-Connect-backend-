@@ -1,4 +1,5 @@
 ﻿using Application.Features.DTOs;
+using Application.Features.Interfaces.IRepositries;
 using Application.Features.Interfaces.IServices;
 using Domain.Entities;
 using Domain.Enum;
@@ -15,9 +16,11 @@ namespace Application.Features.Command.Create
         public class Handler : IRequestHandler<CreateDonationCommand, BaseResponse<string>>
         {
             private readonly ICurrentUser _currentUser;
-            public Handler(ICurrentUser currentUser)
+            private readonly IDonationRepository _donationRepository;
+            public Handler(ICurrentUser currentUser, IDonationRepository donationRepository)
             {
                 _currentUser = currentUser;
+                _donationRepository = donationRepository;
             }
             public async Task<BaseResponse<string>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
             {
@@ -46,6 +49,8 @@ namespace Application.Features.Command.Create
                     Status = DonationStatus.pending,
                     UserId = user.Id
                 };
+                _donationRepository.Add(donation);
+                _donationRepository.Save();
 
                 return new BaseResponse<string>
                 {

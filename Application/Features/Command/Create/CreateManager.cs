@@ -1,6 +1,5 @@
 ﻿using Application.Features.DTOs;
 using Application.Features.Interfaces.IRepositries;
-using BCrypt.Net;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -27,8 +26,8 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateManagerResponseCommand>> Handle(CreateManagerCommand request, CancellationToken cancellationToken)
             {
-                var isManagerExist = IsManagerExist(request.Email);
-                if (!isManagerExist)
+                var isManagerExist = await _userRepo.IsEmailExist(request.Email);
+                if (isManagerExist)
                 {
                     return new BaseResponse<CreateManagerResponseCommand>
                     {
@@ -75,11 +74,6 @@ namespace Application.Features.Command.Create
                 };
             }
 
-            private bool IsManagerExist(string email)
-            {
-                var checkEmail = _userRepo.Get(m => m.Email == email);
-                return checkEmail != null ? true : false;
-            }
         }
 
     }

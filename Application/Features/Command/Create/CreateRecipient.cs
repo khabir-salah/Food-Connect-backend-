@@ -27,8 +27,8 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateRecpientResponseCommand>> Handle(CreateRecipientCommand request, CancellationToken cancellationToken)
             {
-                var checkRecipent = IsEmailExist(request.Email);
-                if (!checkRecipent)
+                var checkRecipent = await _userRepo.IsEmailExist(request.Email);
+                if (checkRecipent)
                 {
                     return new BaseResponse<CreateRecpientResponseCommand>
                     {
@@ -78,11 +78,7 @@ namespace Application.Features.Command.Create
                 };
             }
 
-            private bool IsEmailExist(string email)
-            {
-                var check = _userRepo.Get(u => u.Email == email);
-                return check != null ? true : false;
-            }
+            
         }
     }
 }
