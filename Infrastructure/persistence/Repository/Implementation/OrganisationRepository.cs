@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Features.Interfaces.IRepositries;
 using Domain.Entities;
 using Infrastructure.persistence.Context;
 using System;

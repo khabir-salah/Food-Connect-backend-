@@ -1,0 +1,25 @@
+﻿using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Features.DTOs
+{
+    public class LoginCommandModel
+    {
+        public record LoginCommand : IRequest<BaseResponse<LoginResponseCommand>>
+        {
+            public string Email { get; set; }
+            public string Password { get; set; }
+        }
+
+        public record LoginResponseCommand
+        {
+            public string Email { get; set; }
+            public Guid UserId { get; set; }
+            public string Role {  get; set; }   
+        }
+    }
+}
