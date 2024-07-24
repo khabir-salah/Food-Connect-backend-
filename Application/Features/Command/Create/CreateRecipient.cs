@@ -42,7 +42,7 @@ namespace Application.Features.Command.Create
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
 
-                var getRole = await _roleRepo.Get(r => r.Name == "Organisation");
+                var getRole = await _roleRepo.Get(r => r.Name == "Recipent");
 
                 var user = new User
                 {

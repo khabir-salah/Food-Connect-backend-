@@ -40,7 +40,7 @@ namespace Api.Controllers
             var response = await _mediator.Send(request);
             if (!response.IsSuccessfull)
             {
-                return BadRequest(request);
+                return BadRequest(response.Message);
             }
             var user = await _user.GetUserAsync(response.Data.UserId);
             var token = await _tokenService.GenerateEmailConfirmationToken(response.Data.UserId);
@@ -61,7 +61,7 @@ namespace Api.Controllers
             var response = await _mediator.Send(request);
             if (!response.IsSuccessfull)
             {
-                return BadRequest(request);
+                return BadRequest(response.Message);
             }
             var user = await _user.GetUserAsync(response.Data.UserId);
             var token = await _tokenService.GenerateEmailConfirmationToken(response.Data.UserId);
@@ -83,7 +83,7 @@ namespace Api.Controllers
             var response = await _mediator.Send(request);
             if (!response.IsSuccessfull)
             {
-                return BadRequest(request);
+                return BadRequest(response.Message);
             }
 
             var user = await _user.GetUserAsync(response.Data.UserId);
@@ -131,12 +131,12 @@ namespace Api.Controllers
             var response = await _mediator.Send(request);
             if (!response.IsSuccessfull)
             {
-                return Unauthorized();
+                return Unauthorized(response.Message);
             }
 
             var getUser = await _user.GetUserAsync(response.Data.UserId);
            var token = _authentication.GenerateToken(getUser);
-            return Ok(new { Token = token });
+            return Ok( new { response.Message, Token = token });
         }
 
         [HttpGet("confirm-email")]
@@ -192,7 +192,7 @@ namespace Api.Controllers
             }
 
             user.Password = BCrypt.Net.BCrypt.HashPassword( model.Password, user.PasswordResetToken);
-            user.PasswordResetToken = null; // Invalidate token
+            user.PasswordResetToken = null; 
             user.PasswordExpireTime = null;
             _user.SaveUserAsync();
 
