@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.persistence.Repository.Implementation
 {
-    public class RecipentRepository : GenericRepository<Individual>, IRecipentRepository
+    public class FamilyHeadRepository : GenericRepository<FamilyHead>, IFamilyHeadRepository
     {
-        public RecipentRepository(FoodConnectDB context) : base(context)
+        public FamilyHeadRepository(FoodConnectDB context) : base(context)
         {
         }
     }

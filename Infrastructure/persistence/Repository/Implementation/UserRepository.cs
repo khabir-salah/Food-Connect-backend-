@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,15 +26,18 @@ namespace Infrastructure.persistence.Repository.Implementation
             Save();
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<User?> GetUserAsync(Expression<Func<User, bool>> predicate)
         {
-            return await _foodConnectDB.User.Include(r => r.Role).FirstOrDefaultAsync(x => x.Email == email);
+            return await _foodConnectDB.User.Include(r => r.Role).FirstOrDefaultAsync(predicate);
         }
 
         public async Task<bool> IsEmailExist(string email)
         {
-            var check = await GetUserByEmailAsync(email);
+            var check = await GetUserAsync(u => u.Email == email);
             return check != null ? true : false;
         }
+
+        
+
     }
 }
