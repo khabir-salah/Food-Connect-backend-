@@ -24,20 +24,20 @@ namespace Application.Features.DTOs
             public DonationStatus Status { get; set; }
             public DateTime PickUpTime { get; set; }
             public string PickUpLocation { get; set; } = default!;
-            public IList<IFormFile> DonationImages { get; set; } = null!;
-            public IFormFile PrimaryImageUrl { get; set; } = null!;
-            public UserDonatedResponse UserDetails { get; set; } = null!;
+            public ICollection<string> DonationImages { get; set; } = null!;
+            public string PrimaryImageUrl { get; set; } = null!;
+            public string DonationMadeBy { get; set; }
             public string UserEmail { get; set; }
             public string UserRole { get; set; }
+            public string Name { get; set; }
+            public string PhoneNumber { get; set; }
+            public string profileImage { get; set; }
+            public string Address { get; set; }
         }
 
         public record UserDonatedResponse
         {
-            public string UserEmail { get; set; }
-            public string UserRole { get; set; }
-            public string FirstName { get; set; }
-            public string PhoneNumber { get; set; }
-
+            
         }
     }
 }

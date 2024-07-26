@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Application.Features.DTOs
 {
-    public class CreateFamilyCommandModel
+    public class CreateFamilyHeadCommandModel
     {
-        public record CreateFamilyCommand( string FirstName,
+        public record CreateFamilyHeadCommand( string FirstName,
                                             string LastName,
                                             int FamilyCount,
                                             string PhoneNumber,
                                             string Email,
-                                            string Password) : IRequest<BaseResponse<CreateFamilyResponseCommand>>;
+                                            string Password) : IRequest<BaseResponse<CreateFamilyHeadResponseCommand>>;
 
 
-        public record CreateFamilyResponseCommand( Guid UserId,
+        public record CreateFamilyHeadResponseCommand( Guid UserId,
                                                     Guid FamilyId,
                                                     Guid RoleId,
                                                     string email,

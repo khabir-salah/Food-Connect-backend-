@@ -52,7 +52,7 @@ namespace Api.Controllers
 
 
         [HttpPost("Register-Family")]
-        public async Task<IActionResult> CreateFamily(CreateFamilyCommandModel.CreateFamilyCommand request)
+        public async Task<IActionResult> CreateFamily(CreateFamilyHeadCommandModel.CreateFamilyHeadCommand request)
         {
             if (!ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace Api.Controllers
 
 
         [HttpPost("Register-Recipient")]
-        public async Task<IActionResult> CreateRecipient(CreateRecipientCommandModel.CreateRecipientCommand request)
+        public async Task<IActionResult> CreateRecipient(CreateIndividualCommandModel.CreateIndividualCommand request)
         {
             if (!ModelState.IsValid)
             {

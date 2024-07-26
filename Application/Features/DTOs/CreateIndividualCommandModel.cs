@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.DTOs
 {
-    public class CreateRecipientCommandModel
+    public class CreateIndividualCommandModel
     {
-        public record CreateRecipientCommand : IRequest<BaseResponse<CreateRecpientResponseCommand>>
+        public record CreateIndividualCommand : IRequest<BaseResponse<CreateIndividualResponseCommand>>
         {
             public string FirstName { get; set; } = default!;
             public string LastName { get; set; } = default!;
@@ -19,7 +19,7 @@ namespace Application.Features.DTOs
             public string Password { get; set; } = default!;
         }
 
-        public record CreateRecpientResponseCommand
+        public record CreateIndividualResponseCommand
         {
             public string FirstName { get; set; } = default!;
             public string Email { get; set; } = default!;
