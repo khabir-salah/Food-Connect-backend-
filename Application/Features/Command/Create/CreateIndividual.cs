@@ -3,15 +3,15 @@ using Application.Features.Interfaces.IRepositries;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using static Application.Features.DTOs.CreateRecipientCommandModel;
+using static Application.Features.DTOs.CreateIndividualCommandModel;
 
 
 namespace Application.Features.Command.Create
 {
-    public class CreateRecipient
+    public class CreateIndividual
     {
 
-        public class Handler : IRequestHandler<CreateRecipientCommand, BaseResponse<CreateRecpientResponseCommand>>
+        public class Handler : IRequestHandler<CreateIndividualCommand, BaseResponse<CreateIndividualResponseCommand>>
         {
             private readonly IUserRepository _userRepo;
             private readonly IRoleRepository _roleRepo;
@@ -25,12 +25,12 @@ namespace Application.Features.Command.Create
                 _recipentRepo = recipentRepo;
             }
 
-            public async Task<BaseResponse<CreateRecpientResponseCommand>> Handle(CreateRecipientCommand request, CancellationToken cancellationToken)
+            public async Task<BaseResponse<CreateIndividualResponseCommand>> Handle(CreateIndividualCommand request, CancellationToken cancellationToken)
             {
                 var checkRecipent = await _userRepo.IsEmailExist(request.Email);
                 if (checkRecipent)
                 {
-                    return new BaseResponse<CreateRecpientResponseCommand>
+                    return new BaseResponse<CreateIndividualResponseCommand>
                     {
                         Data = null,
                         IsSuccessfull = false,
@@ -42,33 +42,33 @@ namespace Application.Features.Command.Create
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
 
-                var getRole = await _roleRepo.Get(r => r.Name == "Recipent");
+                var getRole = await _roleRepo.Get(r => r.Name == "Individual");
 
                 var user = new User
                 {
                     Email = request.Email,
                     Password = hashPassword,
                     RoleId = getRole.Id,
+                    PhoneNumber = request.PhoneNumber,
                 };
 
-                var recipent = new Recipent
+                var recipent = new Individual
                 {
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Nin = request.Nin,
                     UserId = user.Id,
-                    PhoneNumber = request.PhoneNumber,
                 };
                 _userRepo.Add(user);
                 _recipentRepo.Add(recipent);
                 _recipentRepo.Save();
                 _logger.LogInformation("User Created Successfully");
 
-                return new BaseResponse<CreateRecpientResponseCommand>
+                return new BaseResponse<CreateIndividualResponseCommand>
                 {
                     IsSuccessfull = true,
                     Message = "User Created Successfully",
-                    Data = new CreateRecpientResponseCommand
+                    Data = new CreateIndividualResponseCommand
                     {
                         Email = user.Email,
                         FirstName = recipent.FirstName,

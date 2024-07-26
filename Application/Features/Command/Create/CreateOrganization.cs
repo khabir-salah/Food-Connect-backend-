@@ -50,13 +50,13 @@ namespace Application.Features.Command.Create
                     Email = request.Email,
                     Password = hashPassword,
                     RoleId = getRole.Id,
+                    PhoneNumber = request.PhoneNumber,
                 };
 
                 var organization = new Organisation
                 {
                     CacNumber = request.CacNumber,
                     Capacity = request.Capacity,
-                    PhoneNumber = request.PhoneNumber,
                     UserId = user.Id,
                     OganisationName = request.OganisationName,
                 };

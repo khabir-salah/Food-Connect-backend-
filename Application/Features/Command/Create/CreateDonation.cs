@@ -1,6 +1,7 @@
 ﻿using Application.Features.DTOs;
 using Application.Features.Interfaces.IRepositries;
 using Application.Features.Interfaces.IServices;
+using Domain.Constant;
 using Domain.Entities;
 using Domain.Enum;
 using MediatR;
@@ -37,6 +38,20 @@ namespace Application.Features.Command.Create
                 }
                 var user = await _currentUser.LoggedInUser();
 
+                DonationMadeBy donationMadeBy;
+                if (user.Role.Name == RoleConst.FamilyHead && user.Family != null)
+                {
+                    donationMadeBy = DonationMadeBy.FamilyHead;
+                }
+                else if(user.Organisation != null)
+                {
+                    donationMadeBy = DonationMadeBy.Orgainization;
+                }
+                else
+                {
+                    donationMadeBy = DonationMadeBy.Individual;
+                }
+
                 var donation = new Donation
                 {
                     Quantity = request.Quantity,
@@ -47,7 +62,8 @@ namespace Application.Features.Command.Create
                     Images = imageUrls,
                     PickUpLocation = request.PickUpLocation,
                     Status = DonationStatus.pending,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    DonationMadeBy = donationMadeBy
                 };
                 _donationRepository.Add(donation);
                 _donationRepository.Save();
