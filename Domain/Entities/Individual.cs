@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Recipent : Auditables
+    public class Individual : Auditables
     {
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
         public Guid UserId { get; set; }
         public virtual User User { get; set; }
-        public string? ProfileImage { get; set; } 
-        public string PhoneNumber { get; set; } = default!;
-        public string Address { get; set; } = default!;
         public ICollection<FoodCollection?> FoodCollection { get; set; }
         public string Nin { get; set; } = null!;
         public string? City { get; set; }       

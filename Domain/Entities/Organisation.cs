@@ -11,9 +11,6 @@ namespace Domain.Entities
         public string OganisationName { get; set; } = default!;
         public Guid UserId { get; set; }
         public virtual User User { get; set; }
-        public string? ProfileImage { get; set; } 
-        public string PhoneNumber { get; set; } = default!;
-        public string Address { get; set; } = default!;
         public string CacNumber { get; set; } = default!;
         public string? City { get; set; } 
         public string? LOcalGovernment { get; set; } 

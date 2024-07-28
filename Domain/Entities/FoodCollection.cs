@@ -17,7 +17,7 @@ namespace Domain.Entities
         public string? Review { get; set; }
         public string[]? ReviewImages { get; set; }
         public Family Family { get; set; }
-        public Recipent Recipent { get; set; }
+        public Individual Recipent { get; set; }
         public Organisation Organisation { get; set; }
         public DonationStatus Status { get; set; } = DonationStatus.Received;
 
