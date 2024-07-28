@@ -17,7 +17,7 @@ namespace Infrastructure.persistence.Context
         public DbSet<Family> Family => Set<Family>();
         public DbSet<FoodCollection> FoodCollection => Set<FoodCollection>();
         public DbSet<Manager> Manager => Set<Manager>();
-        public DbSet<Recipent> Recipent => Set<Recipent>();
+        public DbSet<Individual> Recipent => Set<Individual>();
         public DbSet<User> User => Set<User>();
         public DbSet<Role> Role => Set<Role>();
         public DbSet<Organisation> Organisation => Set<Organisation>();
@@ -31,25 +31,21 @@ namespace Infrastructure.persistence.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Role>().HasData(
                 new Role {
-                    Id = Guid.NewGuid(),
                     Name = "Manager",
                     Description = "Manages the system of the application",
                 },
                 new Role {
-                    Id = Guid.NewGuid(),
-                    Name = "Family", 
-                    Description = "Registering on the application as a whole family" 
+                    Name = "FamilyHead", 
+                    Description = "Registering on the application as a Head of a family. you will be in charge of all activity on the application on behalf of your Family. \n Pls note that once you register your family they can not register as an individual again"
                 },
                 new Role { 
-                    Id = Guid.NewGuid(),
-                    Name = "Organisation",
-                            Description = "Registering on the application as a whole Organization e.g NGO"
+                    Name = "OrganisationHead",
+                            Description = "Registering on the application as a Head of an Organization. you will be in charge of all activity on the application on behalf of your Organization e.g NGO"
                 },
                 new Role
                 {
-                    Id = Guid.NewGuid(),
-                    Name = "Recipent",
-                    Description = "Registering on the application as an Individual"
+                    Name = "Individual",
+                    Description = "Registering on the application as an Individual. \nyou are incharge of every activity on the application"
                 }
                 ) ;
 

@@ -1,5 +1,7 @@
-﻿using Application.Features.Interfaces.IRepositries;
+﻿using Application.Features.DTOs;
+using Application.Features.Interfaces.IRepositries;
 using Domain.Entities;
+using Domain.Enum;
 using Infrastructure.persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,13 +16,29 @@ namespace Infrastructure.persistence.Repository.Implementation
     public class DonationRepository : GenericRepository<Donation>, IDonationRepository
     {
         private readonly FoodConnectDB _foodConnectDB;
+       
         public DonationRepository(FoodConnectDB context) : base(context)
         {
             _foodConnectDB = context;
         }
-        public async Task<Donation?> GetUserAsync(Expression<Func<Donation, bool>> predicate)
+        public async Task<Donation?> GetDonationByUserAsync(Expression<Func<Donation, bool>> predicate)
         {
             return await _foodConnectDB.Donation.Include(r => r.User).FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<ICollection<Donation>> GetAllDonationByPage( PaginationFilter filter)
+        {
+            return await _foodConnectDB.Donation
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> CountAsync( DonationStatus type)
+        {
+            var count = await _foodConnectDB.Donation.ToListAsync();
+            var c =  count.Where(t => t.Status == type).Count();
+            return c > 0 ? c : 0;
         }
     }
 }
