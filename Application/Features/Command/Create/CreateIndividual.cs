@@ -10,14 +10,14 @@ namespace Application.Features.Command.Create
 {
     public class CreateIndividual
     {
-
+        // creating an individual user
         public class Handler : IRequestHandler<CreateIndividualCommand, BaseResponse<CreateIndividualResponseCommand>>
         {
             private readonly IUserRepository _userRepo;
             private readonly IRoleRepository _roleRepo;
             private readonly ILogger<Handler> _logger;
-            private readonly IRecipentRepository _recipentRepo;
-            public Handler(IUserRepository userRepo, IRoleRepository roleRepo, ILogger<Handler> logger, IRecipentRepository recipentRepo)
+            private readonly IIndividualRepository _recipentRepo;
+            public Handler(IUserRepository userRepo, IRoleRepository roleRepo, ILogger<Handler> logger, IIndividualRepository recipentRepo)
             {
                 _userRepo = userRepo;
                 _roleRepo = roleRepo;
@@ -27,6 +27,7 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateIndividualResponseCommand>> Handle(CreateIndividualCommand request, CancellationToken cancellationToken)
             {
+                //checking if a user already exist
                 var checkRecipent = await _userRepo.IsEmailExist(request.Email);
                 if (checkRecipent)
                 {
@@ -38,7 +39,7 @@ namespace Application.Features.Command.Create
                     };
                 }
 
-
+                //adding salt to the password and hashing it
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
 
@@ -50,6 +51,7 @@ namespace Application.Features.Command.Create
                     Password = hashPassword,
                     RoleId = getRole.Id,
                     PhoneNumber = request.PhoneNumber,
+                    Name = $"{request.FirstName} + {request.LastName}",
                 };
 
                 var recipent = new Individual

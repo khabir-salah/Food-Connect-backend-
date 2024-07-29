@@ -11,7 +11,7 @@ namespace Application.Features.Command.Create
     public class CreateFamilyHead
     {
 
-
+        //creating a head of a family. 
         public class Handler : IRequestHandler<CreateFamilyHeadCommand, BaseResponse<CreateFamilyHeadResponseCommand>>
         {
             private readonly IUserRepository _userRepo;
@@ -29,6 +29,7 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateFamilyHeadResponseCommand>> Handle(CreateFamilyHeadCommand request, CancellationToken cancellationToken)
             {
+                //checking if the user already exit
                 var checkFamily = await _userRepo.IsEmailExist(request.Email);
                 if (checkFamily)
                 {
@@ -40,7 +41,7 @@ namespace Application.Features.Command.Create
                     };
                 }
 
-
+                //adding a salt and hashing the password
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
 
@@ -52,6 +53,7 @@ namespace Application.Features.Command.Create
                     Password = hashPassword,
                     RoleId = getRole.Id,
                     PhoneNumber = request.PhoneNumber,
+                    Name = $"{request.LastName} {request.FirstName}",
                 };
 
                 var familyHead = new FamilyHead
@@ -60,6 +62,7 @@ namespace Application.Features.Command.Create
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     UserId = user.Id,
+                    NIN = request.NIN,
                 };
 
                 _familyHeadRepo.Add(familyHead);
@@ -71,7 +74,7 @@ namespace Application.Features.Command.Create
                 {
                     IsSuccessfull = true,
                     Message = "Family Registration Successfull",
-                    Data = new CreateFamilyHeadResponseCommand(user.Id, familyHead.Id, user.RoleId, user.Email,familyHead.FirstName)
+                    Data = new CreateFamilyHeadResponseCommand(user.Id, familyHead.Id, user.RoleId, user.Email,familyHead.FirstName, familyHead.NIN)
                 };
             }
 

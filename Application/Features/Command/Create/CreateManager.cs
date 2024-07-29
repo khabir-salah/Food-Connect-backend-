@@ -9,7 +9,7 @@ namespace Application.Features.Command.Create
 {
     public class CreateManager
     {
-
+        //creating  a manager
         public class Handler : IRequestHandler<CreateManagerCommand, BaseResponse<CreateManagerResponseCommand>>
         {
             private readonly IManagerRepository _managerRepo;
@@ -26,6 +26,7 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateManagerResponseCommand>> Handle(CreateManagerCommand request, CancellationToken cancellationToken)
             {
+                //checking if the manager already exist
                 var isManagerExist = await _userRepo.IsEmailExist(request.Email);
                 if (isManagerExist)
                 {
@@ -37,10 +38,11 @@ namespace Application.Features.Command.Create
                     };
                 }
 
-
+                // adding salt and hashing the password
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Email, salt);
 
+                //assigning role to user
                 var getRole = await _roleRepo.Get(r => r.Name == "Manager");
 
                 var user = new User
@@ -48,6 +50,7 @@ namespace Application.Features.Command.Create
                     Email = request.Email,
                     Password = hashPassword,
                     RoleId = getRole.Id,
+                    Name = $"{request.FirstName} {request.LastName}",
                 };
                 var manager = new Manager
                 {

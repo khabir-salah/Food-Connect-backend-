@@ -8,9 +8,9 @@ using static Application.Features.DTOs.CreateOrganizationCommandModel;
 
 namespace Application.Features.Command.Create
 {
-    public class CreateOrganization
+    public class CreateOrganizationHead
     {
-
+        //creating a head of an organization
         public class Handler : IRequestHandler<CreateOrganizationCommand, BaseResponse<CreateOragnizationResponseCommand>>
         {
             private readonly IUserRepository _userRepo;
@@ -28,6 +28,7 @@ namespace Application.Features.Command.Create
 
             public async Task<BaseResponse<CreateOragnizationResponseCommand>> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
             {
+                //checking if the user already exist
                 var checkOrganization = await _userRepo.IsEmailExist(request.Email);
                 if (checkOrganization)
                 {
@@ -39,10 +40,11 @@ namespace Application.Features.Command.Create
                     };
                 }
 
-
+                //adding salt and hashing the password
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
 
+                //assigning role
                 var getRole = await _roleRepo.Get(r => r.Name == "Organisation");
 
                 var user = new User
@@ -51,12 +53,13 @@ namespace Application.Features.Command.Create
                     Password = hashPassword,
                     RoleId = getRole.Id,
                     PhoneNumber = request.PhoneNumber,
+                    Name = request.OganisationName  
                 };
 
                 var organization = new Organisation
                 {
                     CacNumber = request.CacNumber,
-                    Capacity = request.Capacity,
+                    NumberOfPeopleInOrganization = request.Capacity,
                     UserId = user.Id,
                     OganisationName = request.OganisationName,
                 };

@@ -4,6 +4,7 @@ using Application.Features.Interfaces.IServices;
 using Domain.Constant;
 using Domain.Entities;
 using Domain.Enum;
+using Google.Cloud.Vision.V1;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -13,7 +14,7 @@ namespace Application.Features.Command.Create
 {
     public class CreateDonation
     {
-        
+        //creating a donation
         public class Handler : IRequestHandler<CreateDonationCommand, BaseResponse<string>>
         {
             private readonly ICurrentUser _currentUser;
@@ -38,6 +39,24 @@ namespace Application.Features.Command.Create
                 }
                 var user = await _currentUser.LoggedInUser();
 
+                // Analyze the primary image using Google Cloud Vision API
+                var primaryImageLabels = await AnalyzeImageAsync(primaryImageUrl);
+
+                // Optionally, analyze other donation images
+                var donationImageLabels = new List<IReadOnlyList<EntityAnnotation>>();
+                foreach (var imageUrl in imageUrls)
+                {
+                    var labels = await AnalyzeImageAsync(imageUrl);
+                    donationImageLabels.Add(labels);
+                }
+
+                // Use the analysis results to determine the food safety and details
+                // For example, check if the image contains certain labels
+                bool isSafe = primaryImageLabels.Any(label => label.Description.Contains("safe food consumable good healthy"));
+
+                // updating status base on result
+                var status = isSafe ? DonationStatus.Available : DonationStatus.pending;
+
                 DonationMadeBy donationMadeBy;
                 if (user.Role.Name == RoleConst.FamilyHead && user.Family != null)
                 {
@@ -61,8 +80,8 @@ namespace Application.Features.Command.Create
                     PrimaryImageUrl = primaryImageUrl,
                     Images = imageUrls,
                     PickUpLocation = request.PickUpLocation,
-                    Status = DonationStatus.pending,
-                    UserId = user.Id,
+                    Status = status,
+                    UserId =  user.Id,
                     DonationMadeBy = donationMadeBy
                 };
                 _donationRepository.Add(donation);
@@ -74,6 +93,9 @@ namespace Application.Features.Command.Create
                     Message = "Donation created successfully",
                 };
             }
+
+
+            // creating and saving the donaton image in folder 
             private async Task<string> SaveFileAsync(IFormFile file)
             {
                 if (file == null || file.Length == 0)
@@ -97,8 +119,16 @@ namespace Application.Features.Command.Create
 
                 return $"/{uploadDir}/{uniqueFileName}";
             }
+
+
+           //using google cloud vison to scan food donation
+            private async Task<IReadOnlyList<EntityAnnotation>> AnalyzeImageAsync(string imageUrl)
+            {
+                var client = ImageAnnotatorClient.Create();
+                var image = Image.FromUri(imageUrl);
+                var response = await client.DetectLabelsAsync(image);
+                return response;
+            }
         }
-
-
     }
 }
