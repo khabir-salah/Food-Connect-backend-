@@ -21,9 +21,10 @@ namespace Infrastructure.persistence.Repository.Implementation
         {
             _foodConnectDB = context;
         }
-        public async Task<Donation?> GetDonationByUserAsync(Expression<Func<Donation, bool>> predicate)
+        public async Task<ICollection<Donation>> GetDonationByUserAsync(Expression<Func<Donation, bool>> predicate)
         {
-            return await _foodConnectDB.Donation.Include(r => r.User).FirstOrDefaultAsync(predicate);
+            var donation =  _foodConnectDB.Donation.Include(r => r.User).Where(predicate);
+            return await donation.ToListAsync();
         }
 
         public async Task<ICollection<Donation>> GetAllDonationByPage( PaginationFilter filter)
