@@ -27,13 +27,18 @@ namespace Application.Features.DTOs
             public string PickUpLocation { get; set; } = default!;
             public ICollection<string> DonationImages { get; set; } = null!;
             public string PrimaryImageUrl { get; set; } = null!;
-            public string DonationMadeBy { get; set; }
-            public string UserEmail { get; set; }
-            public string UserRole { get; set; }
-            public string Name { get; set; }
-            public string PhoneNumber { get; set; }
-            public string profileImage { get; set; }
-            public string Address { get; set; }
+            public string? DonationMadeBy { get; set; }
+            public string? UserEmail { get; set; }
+            public string? UserRole { get; set; }
+            public string? Name { get; set; }
+            public string? PhoneNumber { get; set; }
+            public string? profileImage { get; set; }
+            public string? Address { get; set; }
+            public string? ReasonForDisapproval { get; set; }
+            public string? ManagerName { get; set; }
+            public string? ManagerPhoneNumber { get; set; }
+            public string? ManagerProfileImage { get; set; }
+            public string? ManagerAddress { get; set; }
         }
 
         public record UserDonatedResponse

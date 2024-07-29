@@ -14,6 +14,7 @@ namespace Application.Features.DTOs
                                             int FamilyCount,
                                             string PhoneNumber,
                                             string Email,
+                                            string NIN,
                                             string Password) : IRequest<BaseResponse<CreateFamilyHeadResponseCommand>>;
 
 
@@ -21,6 +22,7 @@ namespace Application.Features.DTOs
                                                     Guid FamilyId,
                                                     Guid RoleId,
                                                     string email,
+                                                    string NIN,
                                                     string FirstName);
              
         
