@@ -15,10 +15,12 @@ namespace Infrastructure.persistence.Context
 
         public DbSet<Donation> Donation => Set<Donation>();
         public DbSet<Family> Family => Set<Family>();
+        public DbSet<FamilyHead> FamilyHead => Set<FamilyHead>();
         public DbSet<FoodCollection> FoodCollection => Set<FoodCollection>();
         public DbSet<Manager> Manager => Set<Manager>();
-        public DbSet<Individual> Recipent => Set<Individual>();
+        public DbSet<Individual> Individual => Set<Individual>();
         public DbSet<User> User => Set<User>();
+        public DbSet<Message> Message => Set<Message>();
         public DbSet<Role> Role => Set<Role>();
         public DbSet<Organisation> Organisation => Set<Organisation>();
 
@@ -46,7 +48,12 @@ namespace Infrastructure.persistence.Context
                 {
                     Name = "Individual",
                     Description = "Registering on the application as an Individual. \nyou are incharge of every activity on the application"
-                }
+                },
+                 new Role
+                 {
+                     Name = "Family",
+                     Description = "Registering under the Family Head. \nThe Family Head is still incharge of every activity on the application"
+                 }
                 ) ;
 
             //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Enum
 {
-    public enum DonationStatus
+    public enum DonationMadeBy
     {
-        pending,
-        Approve,
-        Disapprove,
-        Available,
-        Claim,
-        Received
+        Individual,
+        Orgainization,
+        FamilyHead
     }
 }
