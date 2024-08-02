@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Interfaces.IRepositries
 {
-    public interface IRecipentRepository : IGenericRepository<Individual>
+    public interface IIndividualRepository : IGenericRepository<Individual>
     {
     }
 }

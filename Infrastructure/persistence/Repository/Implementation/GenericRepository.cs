@@ -17,20 +17,17 @@ namespace Infrastructure.persistence.Repository.Implementation
         public void Delete(T entity)
         {
             _context.Remove(entity);
-            _context.SaveChanges();
         }
 
         public async Task<T?> Get(Expression<Func<T, bool>> predicate)
         {
-            return await  _context.Set<T>().FirstOrDefaultAsync(predicate);
-            //return await Entity.FirstOrDefaultAsync(predicate);
+            return await Entity.FirstOrDefaultAsync(predicate);
         }
 
 
         public async Task<List<T>> GetAll()
         {
-            return await _context.Set<T>().ToListAsync();
-            //return  await Entity.ToListAsync();
+            return await Entity.ToListAsync();
         }
 
         public void Save()
@@ -41,13 +38,11 @@ namespace Infrastructure.persistence.Repository.Implementation
         public void Update(T entity)
         {
             _context.Update(entity);
-            _context.SaveChanges();
         }
 
         public void Add(T entity)
         {
             _context.Add(entity);
-            _context.SaveChanges();
         }
     }
 }
