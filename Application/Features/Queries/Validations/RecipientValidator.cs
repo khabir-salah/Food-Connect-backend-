@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Validations
 {
-    public class RecipientValidator : AbstractValidator<CreateRecipientCommandModel.CreateRecipientCommand>
+    public class IndividualValidator : AbstractValidator<CreateIndividualCommandModel.CreateIndividualCommand>
     {
-        public RecipientValidator() 
+        public IndividualValidator() 
         {
             RuleFor(recipent => recipent.FirstName)
                 .NotEmpty()
@@ -26,8 +26,8 @@ namespace Domain.Validations
 
             RuleFor(recipent => recipent.PhoneNumber)
                 .NotEmpty()
-                .Matches(@"^\d{10}$")
-                .WithMessage("Invalid phone number.");
+                .Matches(@"^\d{11}$")
+                .WithMessage("Invalid phone number. phone number must be 11 digit");
 
             //RuleFor(recipent => recipent.Address)
             //    .NotEmpty()

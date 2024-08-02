@@ -15,11 +15,11 @@ namespace Domain.Validations
         {
             RuleFor(organization => organization.OganisationName)
                .NotEmpty()
-               .WithMessage("First Name is required");
+               .WithMessage("Organization Name is required");
 
             RuleFor(organization => organization.CacNumber)
                 .NotEmpty()
-                .WithMessage("Last Name is required");
+                .WithMessage("CAC number is required");
 
             //RuleFor(family => family.City)
             //    .NotEmpty()
@@ -27,12 +27,12 @@ namespace Domain.Validations
 
             RuleFor(organization => organization.Capacity)
                 .NotEmpty()
-                .InclusiveBetween(5, 200)
-                .WithMessage("size of organization must be between 5 - 200");
+                .InclusiveBetween(5, 1000)
+                .WithMessage("size of organization must be between 5 - 1000");
 
             RuleFor(organization => organization.PhoneNumber)
                 .NotEmpty()
-                .Matches(@"^\d{10}$")
+                .Matches(@"^\d{11}$")
                 .WithMessage("Invalid phone number.");
 
             //RuleFor(organization => organization.Address)

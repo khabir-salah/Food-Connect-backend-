@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Domain.Validations
 {
-    public class FamilyValidation : AbstractValidator<CreateFamilyCommandModel.CreateFamilyCommand>
+    public class FamilyValidation : AbstractValidator<CreateFamilyHeadCommandModel.CreateFamilyHeadCommand>
     {
         public FamilyValidation()
         {
