@@ -10,23 +10,19 @@ using System.Threading.Tasks;
 
 namespace Application.Features.DTOs
 {
-    public class CreateDonationCommandModel
-    {
         public record CreateDonationCommand : IRequest<BaseResponse<string>>
         {
             public string FoodDetails { get; set; } = default!;
             public int Quantity { get; set; }
             public DateTime ExpirationDate { get; set; }
-            public DonationStatus Status { get; set; }
             public DateTime PickUpTime { get; set; }
             public string PickUpLocation { get; set; } = default!;
             public Guid UserId { get; set; }
-            public IList<IFormFile> DonationImages { get; set; } = null!;
+            public IList<IFormFile> DonationImages { get; set; } 
             public IFormFile PrimaryImageUrl { get; set; } = null!;
         }
 
        
 
 
-    }
 }
