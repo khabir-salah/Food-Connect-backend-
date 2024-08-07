@@ -45,7 +45,7 @@ namespace Application.Features.Command.Create
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, salt);
 
                 //assigning role
-                var getRole = await _roleRepo.Get(r => r.Name == "Organisation");
+                var getRole = await _roleRepo.Get(r => r.Name == "OrganisationHead");
 
                 var user = new User
                 {

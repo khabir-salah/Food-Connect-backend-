@@ -4,11 +4,11 @@ using Application.Features.Interfaces.IServices;
 using Domain.Constant;
 using Domain.Entities;
 using Domain.Enum;
+using Google.Api.Gax.Grpc.Rest;
 using Google.Cloud.Vision.V1;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-using static Application.Features.DTOs.CreateDonationCommandModel;
 
 namespace Application.Features.Command.Create
 {
@@ -38,38 +38,37 @@ namespace Application.Features.Command.Create
                     }
                 }
                 var user = await _currentUser.LoggedInUser();
+                //Analyze the primary image using Google Cloud Vision API
+                //var primaryImageLabels = await AnalyzeImageAsync(primaryImageUrl);
 
-                // Analyze the primary image using Google Cloud Vision API
-                var primaryImageLabels = await AnalyzeImageAsync(primaryImageUrl);
+                //// Optionally, analyze other donation images
+                //var donationImageLabels = new List<IReadOnlyList<EntityAnnotation>>();
+                //foreach (var imageUrl in imageUrls)
+                //{
+                //    var labels = await AnalyzeImageAsync(imageUrl);
+                //    donationImageLabels.Add(labels);
+                //}
 
-                // Optionally, analyze other donation images
-                var donationImageLabels = new List<IReadOnlyList<EntityAnnotation>>();
-                foreach (var imageUrl in imageUrls)
-                {
-                    var labels = await AnalyzeImageAsync(imageUrl);
-                    donationImageLabels.Add(labels);
-                }
+                //// Use the analysis results to determine the food safety and details
+                //// For example, check if the image contains certain labels
+                //bool isSafe = primaryImageLabels.Any(label => label.Description.Contains("safe food consumable good healthy"));
 
-                // Use the analysis results to determine the food safety and details
-                // For example, check if the image contains certain labels
-                bool isSafe = primaryImageLabels.Any(label => label.Description.Contains("safe food consumable good healthy"));
+                ////updating status base on result
+                //var status = isSafe ? DonationStatus.Available : DonationStatus.pending;
 
-                // updating status base on result
-                var status = isSafe ? DonationStatus.Available : DonationStatus.pending;
-
-                DonationMadeBy donationMadeBy;
-                if (user.Role.Name == RoleConst.FamilyHead && user.Family != null)
-                {
-                    donationMadeBy = DonationMadeBy.FamilyHead;
-                }
-                else if(user.Organisation != null)
-                {
-                    donationMadeBy = DonationMadeBy.Orgainization;
-                }
-                else
-                {
-                    donationMadeBy = DonationMadeBy.Individual;
-                }
+                //DonationMadeBy donationMadeBy;
+                //if (user.Role.Name == RoleConst.FamilyHead && user.Family != null)
+                //{
+                //    donationMadeBy = DonationMadeBy.FamilyHead;
+                //}
+                //else if(user.Organisation != null)
+                //{
+                //    donationMadeBy = DonationMadeBy.Orgainization;
+                //}
+                //else
+                //{
+                //    donationMadeBy = DonationMadeBy.Individual;
+                //}
 
                 var donation = new Donation
                 {
@@ -80,9 +79,9 @@ namespace Application.Features.Command.Create
                     PrimaryImageUrl = primaryImageUrl,
                     Images = imageUrls,
                     PickUpLocation = request.PickUpLocation,
-                    Status = status,
+                    Status = DonationStatus.pending,
                     UserId =  user.Id,
-                    DonationMadeBy = donationMadeBy
+                    //DonationMadeBy = donationMadeBy
                 };
                 _donationRepository.Add(donation);
                 _donationRepository.Save();
@@ -124,7 +123,11 @@ namespace Application.Features.Command.Create
            //using google cloud vison to scan food donation
             private async Task<IReadOnlyList<EntityAnnotation>> AnalyzeImageAsync(string imageUrl)
             {
-                var client = ImageAnnotatorClient.Create();
+                //var client = ImageAnnotatorClient.Create();
+                var client = new ImageAnnotatorClientBuilder
+                {
+                    GrpcAdapter = RestGrpcAdapter.Default
+                }.Build();
                 var image = Image.FromUri(imageUrl);
                 var response = await client.DetectLabelsAsync(image);
                 return response;
