@@ -73,8 +73,8 @@ namespace Api.Controllers
 
 
 
-        [HttpPost("Register-Oraganization")]
-        public async Task<IActionResult> CreateOrganization(CreateOrganizationCommandModel.CreateOrganizationCommand request)
+        [HttpPost("Register-Organization")]
+        public async Task<IActionResult> CreateOrganization([FromBody] CreateOrganizationCommandModel.CreateOrganizationCommand request)
         {
             if (!ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace Api.Controllers
         }
 
 
-        [HttpPost("Register-Recipient")]
+        [HttpPost("Register-Individual")]
         public async Task<IActionResult> CreateRecipient(CreateIndividualCommandModel.CreateIndividualCommand request)
         {
             if (!ModelState.IsValid)
@@ -112,15 +112,6 @@ namespace Api.Controllers
             var callbackUrl = Url.Action("ConfirmEmail", "Identity", new { userId = user.Id, token }, protocol: HttpContext.Request.Scheme);
             await _emailService.SendEmailConfirmationAsync(user.Email, callbackUrl);
 
-            try
-            {
-                await _emailService.SendEmailConfirmationAsync(user.Email, callbackUrl);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error. Please try again later.");
-            }
-
             return Ok(new { Message = "Registration successful. Please check your email to confirm your account." });
         }
 
@@ -135,8 +126,12 @@ namespace Api.Controllers
             }
 
             var getUser = await _user.GetUserAsync(response.Data.UserId);
-           var token = _authentication.GenerateToken(getUser);
-            return Ok( new { response.Message, Token = token });
+            var token = _authentication.GenerateToken(getUser);
+            if(getUser.IsEmailConfirmed)
+            {
+                return Ok(new { response.Message, Token = token});
+            }
+            return Unauthorized(response.Message);
         }
 
         [HttpGet("confirm-email")]
@@ -158,7 +153,7 @@ namespace Api.Controllers
             {
                 return BadRequest("Invalid email confirmation request.");
             }
-                return Ok("Email confirmed successfully.");
+            return Ok("Email confirmed successfully.");
         }
 
 
