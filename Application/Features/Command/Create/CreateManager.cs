@@ -49,7 +49,7 @@ namespace Application.Features.Command.Create
                 {
                     Email = request.Email,
                     Password = hashPassword,
-                    RoleId = getRole.Id,
+                    RoleId = getRole.RoleId,
                     Name = $"{request.FirstName} {request.LastName}",
                 };
                 var manager = new Manager

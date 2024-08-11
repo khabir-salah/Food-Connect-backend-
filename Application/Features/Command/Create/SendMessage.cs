@@ -30,7 +30,7 @@ namespace Application.Features.Command.Create
                     DonationId = donation.Id,
                     DonorId = donation.UserId,
                     IsRead = false,
-                    RecipientId = donation.Recipient
+                    RecipientId = (Guid)donation.Recipient
                 };
                 _messageRepo.Add(message);
                 _messageRepo.Save();

@@ -4,6 +4,7 @@ using Application.Features.Interfaces.IServices;
 using Domain.Constant;
 using Domain.Entities;
 using Domain.Enum;
+using Google.Api;
 using Google.Api.Gax.Grpc.Rest;
 using Google.Cloud.Vision.V1;
 using MediatR;
@@ -27,16 +28,17 @@ namespace Application.Features.Command.Create
             public async Task<BaseResponse<string>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
             {
                 string primaryImageUrl = await SaveFileAsync(request.PrimaryImageUrl);
-                var imageUrls = new List<string>();
+                string primaryImageUrl1 = await SaveFileAsync(request.DonationImages);
+                //var imageUrls = new List<string>();
 
-                if (request.DonationImages != null)
-                {
-                    foreach (var image in request.DonationImages)
-                    {
-                        string imageUrl = await SaveFileAsync(image);
-                        imageUrls.Add(imageUrl);
-                    }
-                }
+                //if (request.DonationImages != null)
+                //{
+                //    foreach (var image in request.DonationImages)
+                //    {
+                //        string imageUrl = await SaveFileAsync(image);
+                //        imageUrls.Add(imageUrl);
+                //    }
+                //}
                 var user = await _currentUser.LoggedInUser();
                 //Analyze the primary image using Google Cloud Vision API
                 //var primaryImageLabels = await AnalyzeImageAsync(primaryImageUrl);
@@ -77,15 +79,16 @@ namespace Application.Features.Command.Create
                     ExpirationDate = request.ExpirationDate,
                     FoodDetails = request.FoodDetails,
                     PrimaryImageUrl = primaryImageUrl,
-                    Images = imageUrls,
+                    Images = primaryImageUrl1,
                     PickUpLocation = request.PickUpLocation,
                     Status = DonationStatus.pending,
                     UserId =  user.Id,
                     //DonationMadeBy = donationMadeBy
                 };
                 _donationRepository.Add(donation);
+                
                 _donationRepository.Save();
-
+               
                 return new BaseResponse<string>
                 {
                     IsSuccessfull = true,

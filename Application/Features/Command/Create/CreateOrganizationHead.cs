@@ -51,7 +51,7 @@ namespace Application.Features.Command.Create
                 {
                     Email = request.Email,
                     Password = hashPassword,
-                    RoleId = getRole.Id,
+                    RoleId = getRole.RoleId,
                     PhoneNumber = request.PhoneNumber,
                     Name = request.OganisationName  
                 };
@@ -77,7 +77,7 @@ namespace Application.Features.Command.Create
                     {
                         Email = user.Email,
                         OganisationName = organization.OganisationName,
-                        RoleId = getRole.Id,
+                        RoleId = getRole.RoleId,
                         UserId = user.Id
                     }
                 };

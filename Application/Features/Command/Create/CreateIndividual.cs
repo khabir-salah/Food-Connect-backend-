@@ -49,9 +49,9 @@ namespace Application.Features.Command.Create
                 {
                     Email = request.Email,
                     Password = hashPassword,
-                    RoleId = getRole.Id,
+                    RoleId = getRole.RoleId,
                     PhoneNumber = request.PhoneNumber,
-                    Name = $"{request.FirstName} + {request.LastName}",
+                    Name = $"{request.FirstName} {request.LastName}",
                 };
 
                 var recipent = new Individual
