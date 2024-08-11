@@ -53,11 +53,11 @@ namespace Api.Controllers
             return Ok(delete);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllDonationByManager([FromQuery] ViewDonationCommandModel.DonationCommand request)
+        [HttpGet("AllDonations")]
+        public async Task<IActionResult> GetAllDonation([FromQuery] ViewDonationCommandModel.DonationCommand request)
         {
             var route = Request.Path.Value;
-           var pagedResponse = await _donationService.PageResponse(route, request);
+            var pagedResponse = await _donationService.PageResponse(route, request);
             return Ok(pagedResponse);
         }
 
@@ -142,6 +142,31 @@ namespace Api.Controllers
 
             return Ok(model);
         }
+
+
+        [HttpPut("Approve/{donationId}")]
+        public async Task<IActionResult> ApproveDonationByAdmin(Guid donationId)
+        {
+            var approve = await _donationService.ApproveDonationByAdmin(donationId);
+            if(approve.IsSuccessfull)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+
+        [HttpPost("Disapprove")]
+        public async Task<IActionResult> DispproveDonationByAdmin(DisapproveDonationModel request)
+        {
+            var approve = await _donationService.DispproveDonationByAdmin(request);
+            if (approve.IsSuccessfull)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
 
         [HttpPost("{donationId}/mark-received")]
         public async Task<IActionResult> MarkDonationAsReceived(Guid donationId)
