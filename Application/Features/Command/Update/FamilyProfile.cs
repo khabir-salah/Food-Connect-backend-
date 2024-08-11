@@ -20,12 +20,14 @@ namespace Application.Features.Command.Update
             private readonly ICurrentUser _currentUser;
             private readonly IFamilyRepository _familyRepo;
             private readonly IFamilyHeadRepository _familyHeadRepo;
-            public Handler(IUserRepository userRepository, ICurrentUser currentUser, IFamilyRepository familyRepo, IFamilyHeadRepository familyHeadRepo)
+            private readonly IRoleRepository _roleRepo;
+            public Handler(IUserRepository userRepository, ICurrentUser currentUser, IFamilyRepository familyRepo, IFamilyHeadRepository familyHeadRepo, IRoleRepository roleRepo)
             {
                 _userRepository = userRepository;
                 _currentUser = currentUser;
                 _familyRepo = familyRepo;
                 _familyHeadRepo = familyHeadRepo;
+                _roleRepo = roleRepo;
             }
             public async Task<BaseResponse<string>> Handle(UpdateFamilyHeadModel request, CancellationToken cancellationToken)
             {
@@ -56,12 +58,14 @@ namespace Application.Features.Command.Update
                 familyHead.City = request.City;
 
                 // registering other members of the famly
+                var getRole = await _roleRepo.Get(r => r.Name == "Family");
                 var familyMembers = request.FamilyMembers.Select(fm => new Family
                 {
                     FirstName = fm.FirstName,
                     LastName = fm.LastName,
                     Nin = fm.Nin,
-                    FamilyHeadId = familyHead.Id
+                    FamilyHeadId = familyHead.Id,
+                    RoleId = getRole.RoleId,
                 }).ToList();
                 familyHead.Families = familyMembers;
 
