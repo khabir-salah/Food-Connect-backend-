@@ -15,7 +15,7 @@ namespace Application.Features.DTOs
         public string? PostalCode { get; set; }
         public int? NumberOfPeopleInOrganization { get; set; }
         public string? ProfileImage { get; set; }
-        public string PhoneNumber { get; set; } = default!;
+        public string PhoneNumber { get; set; } 
         public string? Address { get; set; }
     }
 }

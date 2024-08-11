@@ -18,7 +18,7 @@ namespace Application.Features.DTOs
             public DateTime PickUpTime { get; set; }
             public string PickUpLocation { get; set; } = default!;
             public Guid UserId { get; set; }
-            public IList<IFormFile> DonationImages { get; set; } 
+            public IFormFile DonationImages { get; set; } 
             public IFormFile PrimaryImageUrl { get; set; } = null!;
         }
 

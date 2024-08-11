@@ -22,7 +22,7 @@ namespace Application.Features.DTOs
             public string FirstName { get; set; } = default!;
             public Guid Id { get; set; }
             public string Email { get; set; } = default!;
-            public Guid RoleId { get; set; }
+            public string RoleId { get; set; }
             public Guid UserId { get; set; }
         }
     }

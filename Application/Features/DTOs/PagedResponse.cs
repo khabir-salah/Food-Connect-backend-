@@ -33,9 +33,9 @@ namespace Application.Features.DTOs
 
     public class PaginationFilter
     {
-        public int PageNumber { get;}
-        public int PageSize { get;}
-        public int TotalRecords { get;}
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public int TotalRecords { get; set; }
 
         public PaginationFilter()
         {

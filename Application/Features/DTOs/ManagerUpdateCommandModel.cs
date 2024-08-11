@@ -13,7 +13,7 @@ namespace Application.Features.DTOs
         public string? LOcalGovernment { get; set; }
         public string? PostalCode { get; set; }
         public string? ProfileImage { get; set; }
-        public string PhoneNumber { get; set; } = default!;
+        public string PhoneNumber { get; set; }
         public string? Address { get; set; }
     }
 }

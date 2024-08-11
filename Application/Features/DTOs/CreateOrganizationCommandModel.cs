@@ -23,7 +23,7 @@ namespace Application.Features.DTOs
         {
             public string OganisationName { get; set; } = default!;
             public string Email { get; set; } = default!;
-            public Guid RoleId { get; set; }
+            public string RoleId { get; set; }
             public Guid UserId { get; set; }
         }
     }

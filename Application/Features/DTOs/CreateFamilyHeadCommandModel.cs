@@ -20,7 +20,7 @@ namespace Application.Features.DTOs
 
         public record CreateFamilyHeadResponseCommand( Guid UserId,
                                                     Guid FamilyId,
-                                                    Guid RoleId,
+                                                    string RoleId,
                                                     string email,
                                                     string NIN,
                                                     string FirstName);
