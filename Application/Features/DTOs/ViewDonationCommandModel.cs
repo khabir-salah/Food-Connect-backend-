@@ -26,7 +26,7 @@ namespace Application.Features.DTOs
             public DateTime PickUpTime { get; set; }
             public string PickUpLocation { get; set; } = default!;
             public string DonationImages { get; set; } 
-            public string PrimaryImageUrl { get; set; } = null!;
+            public string PrimaryImageUrl { get; set; } 
             public string? DonationMadeBy { get; set; }
             public string? UserEmail { get; set; }
             public string? UserRole { get; set; }
