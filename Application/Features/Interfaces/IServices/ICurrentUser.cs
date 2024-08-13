@@ -16,7 +16,7 @@ namespace Application.Features.Interfaces.IServices
         Task<User> GetUserTokenAsync(string Id);
         Task<User> GetUserEmailAsync(string email);
 
-
-
+        Task<bool> DeactivateUser(Guid id);
+        Task<bool> ActivateUser(Guid id);
     }
 }
