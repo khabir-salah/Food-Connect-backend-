@@ -145,10 +145,21 @@ namespace Api.Controllers
 
 
         [HttpPut("Approve/{donationId}")]
-        public async Task<IActionResult> ApproveDonationByAdmin(Guid donationId)
+        public async Task<IActionResult> ApproveDonationByManager(Guid donationId)
         {
-            var approve = await _donationService.ApproveDonationByAdmin(donationId);
+            var approve = await _donationService.ApproveDonationByManager(donationId);
             if(approve.IsSuccessfull)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("Claim/{donationId}")]
+        public async Task<IActionResult> ClaimDonation(Guid donationId)
+        {
+            var approve = await _donationService.ClaimDonation(donationId);
+            if (approve.IsSuccessfull)
             {
                 return Ok();
             }
@@ -157,9 +168,9 @@ namespace Api.Controllers
 
 
         [HttpPost("Disapprove")]
-        public async Task<IActionResult> DispproveDonationByAdmin(DisapproveDonationModel request)
+        public async Task<IActionResult> DispproveDonationByManager(DisapproveDonationModel request)
         {
-            var approve = await _donationService.DispproveDonationByAdmin(request);
+            var approve = await _donationService.DispproveDonation(request);
             if (approve.IsSuccessfull)
             {
                 return Ok();
@@ -204,15 +215,12 @@ namespace Api.Controllers
             return BadRequest();
         }
 
-        [HttpPost("All")]  
-        public async Task<IActionResult> GetAllDonationByUserAsync()
+        [HttpGet("AllUserDonations")]  
+        public async Task<IActionResult> GetAllDonationByUserAsync([FromQuery] PaginationFilter filter)
         {
-            var donationPage = await _donationService.GetAllDonationsForUser();
-            if(donationPage.IsSuccessfull)
-            {
-                return Ok(donationPage.Data);
-            }
-            return BadRequest();
+            var route = Request.Path.Value;
+            var pagedResponse = await _donationService.DonationPageResponse(route, filter);
+            return Ok(pagedResponse);
         }
 
     }
