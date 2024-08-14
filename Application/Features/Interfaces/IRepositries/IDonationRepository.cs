@@ -15,5 +15,6 @@ namespace Application.Features.Interfaces.IRepositries
         Task<ICollection<Donation>> GetDonationByUserAsync(Expression<Func<Donation, bool>> predicate);
         Task<ICollection<Donation>> GetAllDonationByPage(PaginationFilter filter);
         Task<int> CountAsync(DonationStatus type);
+        Task<Donation?> GetLastClaimByUser(Guid RecipientId);
     }
 }
