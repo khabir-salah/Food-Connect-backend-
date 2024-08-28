@@ -29,49 +29,9 @@ namespace Application.Features.Command.Create
             {
                 string primaryImageUrl = await SaveFileAsync(request.PrimaryImageUrl);
                 string primaryImageUrl1 = await SaveFileAsync(request.DonationImages);
-                //var imageUrls = new List<string>();
-
-                //if (request.DonationImages != null)
-                //{
-                //    foreach (var image in request.DonationImages)
-                //    {
-                //        string imageUrl = await SaveFileAsync(image);
-                //        imageUrls.Add(imageUrl);
-                //    }
-                //}
+                
                 var user = await _currentUser.LoggedInUser();
-                //Analyze the primary image using Google Cloud Vision API
-                //var primaryImageLabels = await AnalyzeImageAsync(primaryImageUrl);
-
-                //// Optionally, analyze other donation images
-                //var donationImageLabels = new List<IReadOnlyList<EntityAnnotation>>();
-                //foreach (var imageUrl in imageUrls)
-                //{
-                //    var labels = await AnalyzeImageAsync(imageUrl);
-                //    donationImageLabels.Add(labels);
-                //}
-
-                //// Use the analysis results to determine the food safety and details
-                //// For example, check if the image contains certain labels
-                //bool isSafe = primaryImageLabels.Any(label => label.Description.Contains("safe food consumable good healthy"));
-
-                ////updating status base on result
-                //var status = isSafe ? DonationStatus.Available : DonationStatus.pending;
-
-                //DonationMadeBy donationMadeBy;
-                //if (user.Role.Name == RoleConst.FamilyHead && user.Family != null)
-                //{
-                //    donationMadeBy = DonationMadeBy.FamilyHead;
-                //}
-                //else if(user.Organisation != null)
-                //{
-                //    donationMadeBy = DonationMadeBy.Orgainization;
-                //}
-                //else
-                //{
-                //    donationMadeBy = DonationMadeBy.Individual;
-                //}
-
+                
                 var donation = new Donation
                 {
                     Quantity = request.Quantity,
@@ -83,7 +43,6 @@ namespace Application.Features.Command.Create
                     PickUpLocation = request.PickUpLocation,
                     Status = DonationStatus.pending,
                     UserId =  user.Id,
-                    //DonationMadeBy = donationMadeBy
                 };
                 _donationRepository.Add(donation);
                 
