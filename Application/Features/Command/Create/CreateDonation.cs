@@ -104,7 +104,7 @@ namespace Application.Features.Command.Create
                     return string.Empty;
 
                 var uploadDir = "uploads";
-                var filePath = Path.Combine("DonationImages", uploadDir);
+                var filePath = Path.Combine("wwwroot", uploadDir);
 
                 if (!Directory.Exists(filePath))
                 {
