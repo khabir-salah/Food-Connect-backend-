@@ -1,5 +1,6 @@
 ﻿using Application.Features.DTOs;
 using Application.Features.Interfaces.IRepositries;
+using Domain.Constant;
 using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -43,7 +44,7 @@ namespace Application.Features.Command.Create
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Email, salt);
 
                 //assigning role to user
-                var getRole = await _roleRepo.Get(r => r.Name == "Manager");
+                var getRole = await _roleRepo.Get(r => r.Name == RoleConst.Manager);
 
                 var user = new User
                 {
