@@ -1,12 +1,11 @@
 ﻿using Application.Features.DTOs;
 using Application.Features.Interfaces.IRepositries;
+using Application.SignalR;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+
 
 namespace Application.Features.Command.Create
 {
@@ -16,17 +15,19 @@ namespace Application.Features.Command.Create
         {
             private readonly IMessageRepository _messageRepo;
             private readonly IDonationRepository _donationRepo;
-            public Handler(IMessageRepository messageRepo, IDonationRepository donationRepo)
+            private readonly IHubContext<ChatHub> _hubContext;
+            public Handler(IMessageRepository messageRepo, IDonationRepository donationRepo, IHubContext<ChatHub> hubContext)
             {
                 _messageRepo = messageRepo;
                 _donationRepo = donationRepo;
+                _hubContext = hubContext;
             }
             public async Task<BaseResponse<Message>> Handle(CreateMessageCommandModel request, CancellationToken cancellationToken)
             {
-                var donation = await _donationRepo.Get(d => d.Id == request.DonationId);
+                var donation = await _donationRepo.Get(d => d.Id == request.donationId);
                 var message = new Message
                 {
-                    Content = request.Content,
+                    Content = request.content,
                     DonationId = donation.Id,
                     DonorId = donation.UserId,
                     IsRead = false,
@@ -34,10 +35,20 @@ namespace Application.Features.Command.Create
                 };
                 _messageRepo.Add(message);
                 _messageRepo.Save();
+
+                await _hubContext.Clients.User(message.RecipientId.ToString())
+                .SendAsync("ReceiveMessage", new
+                {
+                    Message = message.Content,
+                    DonationId = message.DonationId,
+                    DonorId = message.DonorId,
+                    IsRead = message.IsRead,
+                    Timestamp = DateTime.UtcNow
+                });
                 return new BaseResponse<Message>
                 {
                     IsSuccessfull = true,
-                    Data =  message
+                    Data = message
                 };
             }
         }
