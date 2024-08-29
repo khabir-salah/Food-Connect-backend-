@@ -11,7 +11,7 @@ Food Connect is a comprehensive solution that tackles the critical issue of food
 - **Multi-Role System**: Five roles including Super Admin, Manager, Organizations, Families, and Individuals, each with specific permissions and responsibilities.
 - **Food Donation & Approval Process**: Donors can list food donations, which must be approved by a Super Admin or Manager before they become available for others to claim.
 - **Chat System**: Once a donation is claimed, the donor and recipient can chat to coordinate the handover of the food. This feature is powered by SignalR.
-- **Booking & Delivery**: Recipients can book a ride for food delivery directly through the platform.
+- **Email Verification**: I implemented email verification using SMTP, with Mailtrap for testing, to ensure that users are verified before they can fully access the platform's features.
 - **Authentication & Authorization**: Secure authentication using JWT, ensuring that only authorized users can access and interact with the system.
 - **Advanced Architecture**: The application is built using Onion Architecture, incorporating CQRS and Repository patterns for a scalable and maintainable codebase.
 - **Database & Versioning**: MySQL is used for data storage, and the application supports API versioning to manage updates seamlessly.
@@ -33,36 +33,8 @@ Food Connect is a comprehensive solution that tackles the critical issue of food
 ### Chat Interface
 ![Chat Interface](path_to_your_screenshot.png)
 
-## 💻 Getting Started
 
-### Prerequisites
 
-- .NET 6 SDK
-- MySQL Server
 
-### Installation
-
-1. Clone the repository:
-   
-   git clone https://github.com/yourusername/food-connect.git
-   cd food-connect
-
-            </li>
-            <li>Configure the database connection in <code>appsettings.json</code>.</li>
-            <li>Apply migrations to set up the database:
-                <pre><code>dotnet ef database update</code></pre>
-            </li>
-            <li>Run the application:
-                <pre><code>dotnet run</code></pre>
-            </li>
-            <li>Open your browser and navigate to <code>https://localhost:7252</code> to view the application.</li>
-        </ol>
-
-        ##🤝 Contributing
-        *We welcome contributions to make Food Connect even better! If you have suggestions, please open an issue or submit a pull request.
-
-        ##📧 Contact
-        **For any inquiries or further information, please reach out to us at <a href="mailto:abdulkabirsalahudeen19@gmail.com">abdulkabirsalahudeen19@gmail.com<\a>.
-
-        Thank you.
+        
 
