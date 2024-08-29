@@ -43,7 +43,7 @@ Food Connect is a comprehensive solution that tackles the critical issue of food
 ### Installation
 
 1. Clone the repository:
-   ```bash
+   
    git clone https://github.com/yourusername/food-connect.git
    cd food-connect
 
