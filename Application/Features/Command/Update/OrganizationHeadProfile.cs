@@ -40,7 +40,7 @@ namespace Application.Features.Command.Update
                     };
                 }
 
-                var organization = await _organizationRepo.Get(i => i.Id == loggedinUser.Id);
+                var organization = await _organizationRepo.Get(i => i.UserId == loggedinUser.Id);
 
                 //updating properties
                 getUser.ProfileImage = getUser.ProfileImage ?? request.ProfileImage;
@@ -48,12 +48,12 @@ namespace Application.Features.Command.Update
                 getUser.Name = getUser.Name;
                 getUser.Email = getUser.Email;
                 getUser.IsEmailConfirmed = getUser.IsEmailConfirmed ? true : false;
-                getUser.Address = getUser.Address ?? request.Address;
+                getUser.Address =  request.Address ?? getUser.Address ;
 
                 organization.LOcalGovernment = request.LOcalGovernment;
                 organization.PostalCode = request.PostalCode;
                 organization.City = request.City;
-                organization.NumberOfPeopleInOrganization = request.NumberOfPeopleInOrganization;
+                organization.NumberOfPeopleInOrganization = request.NumberOfPeopleInOrganization ?? organization.NumberOfPeopleInOrganization;
 
                 _userRepo.Update(getUser);
                 _organizationRepo.Update(organization);
