@@ -42,7 +42,7 @@ namespace Application.Features.Command.Update
                     };
                 }
 
-                var singleUser = await _individualRepo.Get(i => i.Id == loggedinUser.Id);
+                var singleUser = await _individualRepo.Get(i => i.UserId == loggedinUser.Id);
 
                 //assigning new profile update
                 getUser.ProfileImage = getUser.ProfileImage ?? request.ProfileImage;
