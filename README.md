@@ -1,90 +1,52 @@
+# Food Connect
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Connect - README</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            padding: 20px;
-        }
-        h1, h2, h3 {
-            color: #333;
-        }
-        p {
-            margin-bottom: 1em;
-        }
-        ul {
-            list-style-type: square;
-            padding-left: 20px;
-        }
-        .screenshot {
-            border: 1px solid #ddd;
-            padding: 5px;
-            margin: 10px 0;
-            width: 100%;
-            max-width: 600px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Food Connect</h1>
+Welcome to **Food Connect**, a platform designed to bridge the gap between surplus food sources and those in need. Our mission is to reduce food waste and combat food insecurity by connecting individuals, families, organizations, restaurants, supermarkets, and other food suppliers with charities and food distribution points.
 
-        <p>Welcome to <strong>Food Connect</strong>, a platform designed to bridge the gap between surplus food sources and those in need. Our mission is to reduce food waste and combat food insecurity by connecting individuals, families, organizations, restaurants, supermarkets, and other food suppliers with charities and food distribution points.</p>
+## 🌟 Overview
 
-        <h2>🌟 Overview</h2>
+Food Connect is a comprehensive solution that tackles the critical issue of food waste and food insecurity. By leveraging technology, we facilitate the redistribution of surplus food to those who need it the most. This platform allows donors to easily donate food, and recipients can claim donations that have been approved by super admins or managers. Once a donation is claimed, the donor and recipient can communicate directly through the built-in chat feature or arrange a delivery to transport the food.
 
-        <p>Food Connect is a comprehensive solution that tackles the critical issue of food waste and food insecurity. By leveraging technology, we facilitate the redistribution of surplus food to those who need it the most. This platform allows donors to easily donate food, and recipients can claim donations that have been approved by super admins or managers. Once a donation is claimed, the donor and recipient can communicate directly through the built-in chat feature or arrange a delivery to transport the food.</p>
+## 🚀 Features
 
-        <h2>🚀 Features</h2>
-        <ul>
-            <li><strong>Multi-Role System:</strong> Five roles including Super Admin, Manager, Organizations, Families, and Individuals, each with specific permissions and responsibilities.</li>
-            <li><strong>Food Donation & Approval Process:</strong> Donors can list food donations, which must be approved by a Super Admin or Manager before they become available for others to claim.</li>
-            <li><strong>Chat System:</strong> Once a donation is claimed, the donor and recipient can chat to coordinate the handover of the food. This feature is powered by SignalR.</li>
-            <li><strong>Email Verification System:</strong> I implemented email verification using SMTP, with Mailtrap for testing, to ensure that users are verified before they can fully access the platform's features.</li>
-            <li><strong>Authentication & Authorization:</strong> Secure authentication using JWT, ensuring that only authorized users can access and interact with the system.</li>
-            <li><strong>Advanced Architecture:</strong> The application is built using Onion Architecture, incorporating CQRS and Repository patterns for a scalable and maintainable codebase.</li>
-            <li><strong>Database & Versioning:</strong> MySQL is used for data storage, and the application supports API versioning to manage updates seamlessly.</li>
-        </ul>
+- **Multi-Role System**: Five roles including Super Admin, Manager, Organizations, Families, and Individuals, each with specific permissions and responsibilities.
+- **Food Donation & Approval Process**: Donors can list food donations, which must be approved by a Super Admin or Manager before they become available for others to claim.
+- **Chat System**: Once a donation is claimed, the donor and recipient can chat to coordinate the handover of the food. This feature is powered by SignalR.
+- **Booking & Delivery**: Recipients can book a ride for food delivery directly through the platform.
+- **Authentication & Authorization**: Secure authentication using JWT, ensuring that only authorized users can access and interact with the system.
+- **Advanced Architecture**: The application is built using Onion Architecture, incorporating CQRS and Repository patterns for a scalable and maintainable codebase.
+- **Database & Versioning**: MySQL is used for data storage, and the application supports API versioning to manage updates seamlessly.
 
-        <h2>🛠️ Technologies Used</h2>
-        <ul>
-            <li><strong>Backend:</strong> ASP.NET Web API, C#, SignalR, Fluent Validation, Onion Architecture, CQRS, Repository Pattern, JWT Authentication, API Versioning</li>
-            <li><strong>Frontend:</strong> Razor, HTML, CSS, JavaScript</li>
-            <li><strong>Database:</strong> MySQL</li>
-        </ul>
+## 🛠️ Technologies Used
 
-        <h2>📸 Screenshots</h2>
-        <h3>Dashboard</h3>
-        <img src="path_to_your_screenshot.png" alt="Dashboard" class="screenshot">
+- **Backend**: ASP.NET Web API, C#, SignalR, Fluent Validation, Onion Architecture, CQRS, Repository Pattern, JWT Authentication, API Versioning
+- **Frontend**: Razor, HTML, CSS, JavaScript
+- **Database**: MySQL
 
-        <h3>Food Donation Page</h3>
-        <img src="path_to_your_screenshot.png" alt="Donation Page" class="screenshot">
+## 📸 Screenshots
 
-        <h3>Chat Interface</h3>
-        <img src="path_to_your_screenshot.png" alt="Chat Interface" class="screenshot">
+### Dashboard
+![Dashboard](path_to_your_screenshot.png)
 
-        <h2>💻 Getting Started</h2>
+### Food Donation Page
+![Donation Page](path_to_your_screenshot.png)
 
-        <h3>Prerequisites</h3>
-        <ul>
-            <li>.NET 6 SDK</li>
-            <li>MySQL Server</li>
-        </ul>
+### Chat Interface
+![Chat Interface](path_to_your_screenshot.png)
 
-        <h3>Installation</h3>
-        <ol>
-            <li>Clone the repository:
-                <pre><code>git clone https://github.com/khabir-salah/food-connect.git
-cd food-connect</code></pre>
+## 💻 Getting Started
+
+### Prerequisites
+
+- .NET 6 SDK
+- MySQL Server
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/food-connect.git
+   cd food-connect
+
             </li>
             <li>Configure the database connection in <code>appsettings.json</code>.</li>
             <li>Apply migrations to set up the database:
