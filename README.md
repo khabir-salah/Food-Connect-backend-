@@ -1,6 +1,6 @@
 # Food Connect
 
-Welcome to **Food Connect**, a platform designed to bridge the gap between surplus food sources and those in need. Our mission is to reduce food waste and combat food insecurity by connecting individuals, families, organizations, restaurants, supermarkets, and other food suppliers with charities and food distribution points.
+Welcome to **Food Connect**, a platform designed to bridge the gap between surplus food sources and those in need. Our mission is to reduce food waste and combat food insecurity by connecting individuals, families, organizations, restaurants, supermarkets, and other food suppliers with those in need of food, charities and food distribution points.
 
 ## 🌟 Overview
 
@@ -18,20 +18,42 @@ Food Connect is a comprehensive solution that tackles the critical issue of food
 
 ## 🛠️ Technologies Used
 
-- **Backend**: ASP.NET Web API, C#, SignalR, Fluent Validation, Onion Architecture, CQRS, Repository Pattern, JWT Authentication, API Versioning
+- **Backend**: ASP.NET Web API, C#, SignalR, Fluent Validation, Onion Architecture, CQRS, Repository Pattern, JWT Authentication, API Versioning, EntityFramework Core
 - **Frontend**: Razor, HTML, CSS, JavaScript
 - **Database**: MySQL
 
 ## 📸 Screenshots
 
+### Landing Page
+![Dashboard](Api/wwwroot/Screenshot/landingpage.png)
+
+### User Registration(individual)
+![Dashboard](Api/wwwroot/Screenshot/registerindividual.png)
+
+### Request for email verification after registration
+![Donation Page](Api/wwwroot/Screenshot/emailverification.png)
+
 ### User Dashboard
 ![Dashboard](Api/wwwroot/Screenshot/dashboard.png)
 
-### Food Donation Page
-![Donation Page](path_to_your_screenshot.png)
+### Admin Dashboard
+![Dashboard](Api/wwwroot/Screenshot/users.png)
+
+### User Can Claim Donation... but there is restriction in claiming
+![Dashboard](Api/wwwroot/Screenshot/receivefood.png)
+
+### Restriction
+![Dashboard](Api/wwwroot/Screenshot/claimablefood.png)
+
+### Chat interface
+![Dashboard](Api/wwwroot/Screenshot/recipientchat.png)
 
 ### Chat Interface
-![Chat Interface](path_to_your_screenshot.png)
+![Chat Interface](Api/wwwroot/Screenshot/donorchat.png)
+
+### Users can see review given on a particular donation
+![Dashboard](Api/wwwroot/Screenshot/review.png)
+
 
 
 
