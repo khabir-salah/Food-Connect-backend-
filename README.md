@@ -24,8 +24,8 @@ Food Connect is a comprehensive solution that tackles the critical issue of food
 
 ## 📸 Screenshots
 
-### Dashboard
-![Dashboard](path_to_your_screenshot.png)
+### User Dashboard
+![Dashboard](~/Screenshot/dashboard.png)
 
 ### Food Donation Page
 ![Donation Page](path_to_your_screenshot.png)
