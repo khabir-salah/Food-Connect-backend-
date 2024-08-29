@@ -58,15 +58,11 @@ Food Connect is a comprehensive solution that tackles the critical issue of food
             <li>Open your browser and navigate to <code>https://localhost:7252</code> to view the application.</li>
         </ol>
 
-        <h2>🤝 Contributing</h2>
-        <p>We welcome contributions to make Food Connect even better! If you have suggestions, please open an issue or submit a pull request.</p>
+        ##🤝 Contributing
+        *We welcome contributions to make Food Connect even better! If you have suggestions, please open an issue or submit a pull request.
 
-        <h2>📧 Contact</h2>
-        <p>For any inquiries or further information, please reach out to us at <a href="mailto:abdulkabirsalahudeen19@gmail.com">abdulkabirsalahudeen19@gmail.com</a>.</p>
+        ##📧 Contact
+        **For any inquiries or further information, please reach out to us at <a href="mailto:abdulkabirsalahudeen19@gmail.com">abdulkabirsalahudeen19@gmail.com<\a>.
 
-        <hr>
+        Thank you.
 
-        <p>Thank you.</p>
-    </div>
-</body>
-</html>
