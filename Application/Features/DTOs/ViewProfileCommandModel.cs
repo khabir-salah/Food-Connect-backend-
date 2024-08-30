@@ -19,7 +19,7 @@ namespace Application.Features.DTOs
         public string? City { get; set; }
         public string? LOcalGovernment { get; set; }
         public string? PostalCode { get; set; }
-
+        public string Role { get; set; }    
         public string CacNumber { get; set; } = default!;
         public int? NumberOfPeopleInOrganization { get; set; }
 

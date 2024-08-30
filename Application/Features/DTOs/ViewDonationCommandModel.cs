@@ -38,10 +38,12 @@ namespace Application.Features.DTOs
             public string? ManagerName { get; set; }
             public string? RecipientName { get; set; }
             public string? RecipientEmail { get; set; }
+            public string? RecipientRole { get; set; }
             public string? ManagerEmail { get; set; }
             public bool CanClaim { get; set; }
             public string ClaimRestrictionReason { get; set; }
             public Guid DonationId { get; set; }
+            public Guid UserId { get; set; }
 
         }
 

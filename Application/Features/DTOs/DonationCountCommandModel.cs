@@ -12,6 +12,8 @@ namespace Application.Features.DTOs
         public int ApproveCount { get; set; }
         public int DisapproveCount { get; set; }
         public int ReceivedCount { get; set; }
+        public int ClaimedCount { get; set; }
+        public int ExpiredCount { get; set; }
 
     }
 }

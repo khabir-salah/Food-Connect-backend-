@@ -20,6 +20,6 @@ namespace Application.Features.DTOs
     public class DonationWithMessagesViewModel
     {
         public DonationResponseCommandModel Donation {  get; set; }
-        public MessageCommandModel Messages {  get; set; }
+        public ICollection<MessageCommandModel> Messages {  get; set; }
     }
 }

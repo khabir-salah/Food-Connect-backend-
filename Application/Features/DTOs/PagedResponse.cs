@@ -40,13 +40,13 @@ namespace Application.Features.DTOs
         public PaginationFilter()
         {
             PageNumber = 1;
-            PageSize = 10;
+            PageSize = 30;
         }
 
         public PaginationFilter(int pageNumber, int pageSize)
         {
             PageNumber = pageNumber < 1 ? 1 : pageNumber;
-            PageSize = pageSize > 10 ? 10 : pageSize;
+            PageSize = pageSize > 30 ? 30 : pageSize;
         }
     }
 
