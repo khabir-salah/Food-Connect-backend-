@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Features.DTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,8 @@ namespace Application.Features.Interfaces.IRepositries
         Task SavePasswordResetTokenAsync(User user, string token);
         Task<User?> GetUserAsync(Expression<Func<User, bool>> predicate);
         Task<bool> IsEmailExist(string email);
+        Task<User?> GetUserDonationAsync(Expression<Func<User, bool>> predicate);
+        Task<ICollection<User>> GetAllUserDetailsAsync(PaginationFilter filter);
+        Task<int> CountAsync();
     }
 }
