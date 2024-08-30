@@ -11,6 +11,7 @@ namespace Domain.Entities
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
         public string? Nin { get; set; } 
+        public string RoleId { get; set; }
         public Guid FamilyHeadId { get; set; }
     }
 }

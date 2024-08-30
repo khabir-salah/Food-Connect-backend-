@@ -14,10 +14,10 @@ namespace Domain.Entities
         public virtual User User { get; set; }
         public int FamilySize { get; set; }
         public string? City { get; set; }
+        public string NIN { get; set; }
         public string? LOcalGovernment { get; set; }
         public string? PostalCode { get; set; }
-        public ICollection<Family> Families { get; set; }
-        public Family Family { get; set; }
+        public ICollection<Family?> Families { get; set; }
         public ICollection<Donation?> Donation { get; set; }
         public ICollection<FoodCollection?> FoodCollection { get; set; }
     }

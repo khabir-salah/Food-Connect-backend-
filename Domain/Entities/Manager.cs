@@ -15,6 +15,7 @@ namespace Domain.Entities
         public string? Nin { get; set; }
         public string? City { get; set; }
         public string? LOcalGovernment { get; set; } 
-        public string? PostalCode { get; set; } 
+        public string? PostalCode { get; set; }
+        public ICollection<Donation> Donations { get; set; }
     }
 }
