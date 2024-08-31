@@ -30,6 +30,8 @@ namespace Infrastructure.persistence.Repository.Implementation
         public async Task<ICollection<Donation>> GetAllDonationByPage( PaginationFilter filter)
         {
             return await _foodConnectDB.Donation
+                 .Include(r => r.User)
+                 .ThenInclude(n => n.Role)
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .ToListAsync();
@@ -39,7 +41,15 @@ namespace Infrastructure.persistence.Repository.Implementation
         {
             var count = await _foodConnectDB.Donation.ToListAsync();
             var c =  count.Where(t => t.Status == type).Count();
-            return c > 0 ? c : 0;
+            return c;
+        }
+
+        public async Task<Donation?> GetLastClaimByUser(Guid RecipientId)
+        {
+            return await _foodConnectDB.Donation
+                .Where(r => r.Recipient == RecipientId)
+                .OrderByDescending(r => r.LastClaimTime)
+                .FirstOrDefaultAsync();
         }
     }
 }
