@@ -26,7 +26,7 @@ namespace Domain.Validations
 
             RuleFor(family => family.PhoneNumber)
                 .NotEmpty()
-                .Matches(@"^\d{10}$")
+                .Matches(@"^\d{11}$")
                 .WithMessage("Invalid phone number.");
 
             RuleFor(user => user.Email)

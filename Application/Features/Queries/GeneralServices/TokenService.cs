@@ -60,8 +60,9 @@ namespace Application.Features.Queries.GeneralServices
 
             // Activate the user's account
             user.IsEmailConfirmed = true;
-            user.PasswordResetToken = null; // Remove the token after successful validation
-            user.PasswordExpireTime = null; // Remove the expiration after successful validation
+            user.IsActivated = true;
+            user.PasswordResetToken = null; 
+            user.PasswordExpireTime = null; 
             _userRepository.Update(user);
             _userRepository.Save();
 
