@@ -1,9 +1,8 @@
-﻿using Application.Features.Command.Create;
-using Application.Features.DTOs;
+﻿using Application.Features.DTOs;
 using Application.Features.Interfaces.IServices;
-using Application.Features.Queries.GeneralServices;
 using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -164,13 +163,13 @@ namespace Api.Controllers
             var user = await _user.GetUserEmailAsync(model.Email);
             if (user == null)
             {
-                return Ok();
+                return BadRequest();
             }
 
             var token = _tokenService.GeneratePasswordResetToken(user);
             await _user.SavePasswordResetTokenAsync(user, token);
 
-            var callbackUrl = Url.Action("ResetPassword", "Account", new { token }, Request.Scheme);
+            var callbackUrl = Url.Action("reset-password", "Identity", new { token }, Request.Scheme);
             await _emailService.SendPasswordResetEmailAsync(model.Email, callbackUrl);
 
             return Ok();

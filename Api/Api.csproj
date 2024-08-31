@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,6 +19,35 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\uploads\025682d6-a371-47bb-bd1a-7b32f54ae96d_Food2.jpeg" />
+    <None Include="wwwroot\uploads\03c3ea39-1c2e-43b3-aca7-80abc130df2d_food5.jpeg" />
+    <None Include="wwwroot\uploads\177d22ab-99bc-4410-818e-8ca1c5ebc283_food1.jpeg" />
+    <None Include="wwwroot\uploads\1ba62acd-330b-45fc-9e42-b82f62f31f92_Food2.jpeg" />
+    <None Include="wwwroot\uploads\2133601b-1e63-4066-b49e-418a6ac5cb13_food1.jpeg" />
+    <None Include="wwwroot\uploads\299acddd-c4e2-4374-af8a-7165d6c6721a_Food2.jpeg" />
+    <None Include="wwwroot\uploads\2bd1d0e3-8e19-4cfa-af79-81bc5ce5b8ea_Food2.jpeg" />
+    <None Include="wwwroot\uploads\304f63a2-54ce-4c42-9be3-b6dfc3a9b7ba_food1.jpeg" />
+    <None Include="wwwroot\uploads\33464f7f-9cb5-4cc3-8bfe-12c538918e2c_food5.jpeg" />
+    <None Include="wwwroot\uploads\359b65fa-897b-45ae-9cd1-b72a044568b2_food1.jpeg" />
+    <None Include="wwwroot\uploads\3f0f4322-3b7d-4a51-b401-b22430c97d17_Food2.jpeg" />
+    <None Include="wwwroot\uploads\4cf5c1cd-eef6-49a0-9bc5-16646e1b6c25_food1.jpeg" />
+    <None Include="wwwroot\uploads\5248fbe1-65f2-493c-8c57-3ea21681669c_Food2.jpeg" />
+    <None Include="wwwroot\uploads\6deeb336-29e8-4280-8e60-4a0835b1f2a6_Food2.jpeg" />
+    <None Include="wwwroot\uploads\77a0bdd9-2a1a-4d03-9bec-980bd7a5afc4_Food2.jpeg" />
+    <None Include="wwwroot\uploads\7ace1eaa-0e3f-485c-8adc-ba109f9ca58c_food1.jpeg" />
+    <None Include="wwwroot\uploads\7bf54cab-ecda-4aba-99ee-69d475e4671b_Food2.jpeg" />
+    <None Include="wwwroot\uploads\ae0b4723-1834-4dc4-ac10-354f8b2493f8_Food2.jpeg" />
+    <None Include="wwwroot\uploads\c329eba3-acb3-4a4c-a7a8-b8fbd5aa4491_food1.jpeg" />
+    <None Include="wwwroot\uploads\cde64307-98d0-4923-8202-8b07c4e75415_Food2.jpeg" />
+    <None Include="wwwroot\uploads\ce67cd0e-e99a-4df1-bda8-23552051a3ca_Food2.jpeg" />
+    <None Include="wwwroot\uploads\e691eb6c-859b-43e4-ab49-99dc9bf64815_Food2.jpeg" />
+    <None Include="wwwroot\uploads\eebfecbe-c462-4cd7-bce4-71b316a26837_food3.jpeg" />
+    <None Include="wwwroot\uploads\f694909d-ea1f-455e-a6f1-35953d3014ca_Food2.jpeg" />
+    <None Include="wwwroot\uploads\f99dab03-5bf2-496c-a291-4e6670c51cac_food5.jpeg" />
+    <None Include="wwwroot\uploads\fdd8f878-2cfe-4fc8-b484-63dba535807c_food1.jpeg" />
   </ItemGroup>
 
 </Project>

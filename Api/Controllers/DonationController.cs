@@ -4,8 +4,10 @@ using Application.Features.Interfaces.IServices;
 using Application.Features.Queries.GeneralServices;
 using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Application.Features.DTOs.ViewDonationCommandModel;
 
 namespace Api.Controllers
 {
@@ -15,26 +17,29 @@ namespace Api.Controllers
     public class DonationController : ControllerBase
     {
         private readonly IMediator mediator;
-        private readonly IUriService _uriService;
         private readonly IDonationService _donationService;
-        private readonly IMessageService _messageService;
-        public DonationController(IMediator mediator, IUriService uriService, IDonationService donationService, IMessageService messageService)
+        private readonly ILogisticsService _logisticsService;
+        private readonly IDonationFilter _donationFilter;
+        private readonly IDonationValidation _donationValidation;
+
+        public DonationController(IMediator mediator,  IDonationService donationService, ILogisticsService logisticsService, IDonationFilter donationFilter, IDonationValidation donationValidation)
         {
             this.mediator = mediator;
-            this._uriService = uriService;
             this._donationService = donationService;
-            _messageService = messageService;
+            _logisticsService = logisticsService;
+            _donationFilter = donationFilter;
+            _donationValidation = donationValidation;
         }
 
         [HttpPost("Create")]
         public async Task<IActionResult> CreateDonation(CreateDonationCommand request)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             var donation = await mediator.Send(request);
-            if(!donation.IsSuccessfull)
+            if (!donation.IsSuccessfull)
             {
                 return BadRequest(ModelState);
             }
@@ -64,17 +69,19 @@ namespace Api.Controllers
         [HttpGet("Count")]
         public async Task<IActionResult> DonationCount()
         {
-            var pendingCount = await _donationService.PendingDonationCountAsync();
-            var approveCount = await _donationService.ApprovedDonationCountAsync();
-            var receivedCount = await _donationService.ReceivedDonationCountAsync();
-            var disapproveCount = await _donationService.DisapprovedDonationCountAsync();
+            var pendingCount = await _logisticsService.PendingDonationCountAsync();
+            var approveCount = await _logisticsService.ApprovedDonationCountAsync();
+            var receivedCount = await _logisticsService.ReceivedDonationCountAsync();
+            var disapproveCount = await _logisticsService.DisapprovedDonationCountAsync();
+            var expiredCount = await _logisticsService.ExpiredDonationCountAsync();
 
             var model = new DonationCountCommandModel
             {
                 ApproveCount = approveCount,
                 DisapproveCount = disapproveCount,
                 PendingCount = pendingCount,
-                ReceivedCount = receivedCount
+                ReceivedCount = receivedCount,
+                ExpiredCount = expiredCount
             };
             return Ok(model);
         }
@@ -83,7 +90,7 @@ namespace Api.Controllers
         public async Task<IActionResult> UserPendingDonation()
         {
             var donation = await _donationService.ViewPendingDonationByUser();
-            if(donation.IsSuccessfull)
+            if (donation.IsSuccessfull)
             {
                 return Ok(donation.Data);
             }
@@ -94,6 +101,17 @@ namespace Api.Controllers
         public async Task<IActionResult> UserApprovedDonation()
         {
             var donation = await _donationService.ViewApprovedDonationByUser();
+            if (donation.IsSuccessfull)
+            {
+                return Ok(donation.Data);
+            }
+            return Ok(null);
+        }
+
+        [HttpGet("Expired")]
+        public async Task<IActionResult> UserExpiredDonation()
+        {
+            var donation = await _donationService.ExpiredDonationByUser();
             if (donation.IsSuccessfull)
             {
                 return Ok(donation.Data);
@@ -123,32 +141,14 @@ namespace Api.Controllers
             return Ok(null);
         }
 
-        [HttpGet("{donationId}")]
-        public async Task<IActionResult> GetDonationDetailsWithMessages(Guid donationId)
-        {
-            var donation = await _donationService.GetDonationByIdAsync(donationId);
-            var messages = await _messageService.GetMessagesByDonationIdAsync(donationId);
 
-            if (donation == null)
-            {
-                return NotFound();
-            }
-
-            var model = new DonationWithMessagesViewModel
-            {
-                Donation = donation,
-                Messages = messages
-            };
-
-            return Ok(model);
-        }
 
 
         [HttpPut("Approve/{donationId}")]
         public async Task<IActionResult> ApproveDonationByManager(Guid donationId)
         {
-            var approve = await _donationService.ApproveDonationByManager(donationId);
-            if(approve.IsSuccessfull)
+            var approve = await _donationValidation.ApproveDonationByManager(donationId);
+            if (approve.IsSuccessfull)
             {
                 return Ok();
             }
@@ -158,7 +158,7 @@ namespace Api.Controllers
         [HttpPut("Claim/{donationId}")]
         public async Task<IActionResult> ClaimDonation(Guid donationId)
         {
-            var approve = await _donationService.ClaimDonation(donationId);
+            var approve = await _donationValidation.ClaimDonation(donationId);
             if (approve.IsSuccessfull)
             {
                 return Ok();
@@ -170,7 +170,7 @@ namespace Api.Controllers
         [HttpPost("Disapprove")]
         public async Task<IActionResult> DispproveDonationByManager(DisapproveDonationModel request)
         {
-            var approve = await _donationService.DispproveDonation(request);
+            var approve = await _donationValidation.DispproveDonation(request);
             if (approve.IsSuccessfull)
             {
                 return Ok();
@@ -179,49 +179,94 @@ namespace Api.Controllers
         }
 
 
-        [HttpPost("{donationId}/mark-received")]
-        public async Task<IActionResult> MarkDonationAsReceived(Guid donationId)
-        {
-            var received = await _donationService.DonationReceived(donationId);
-            if (received.IsSuccessfull)
-            {
-                await _messageService.DeleteMessagesByDonationIdAsync(donationId);
-                return Ok();
-            }
 
-            return BadRequest();
-        }
 
-        [HttpGet("claimed")]
+        [HttpGet("claimedbyUser")]
         public async Task<IActionResult> ViewClaimedDonationByUser()
         {
             var claimed = await _donationService.ViewClaimedDonationByUser();
-            if (claimed.IsSuccessfull)
+            if (!claimed.IsSuccessfull)
             {
-                return Ok(claimed);
+                return Ok(claimed.Data);
             }
-            return BadRequest();
+            return Ok(claimed.Data);
         }
 
-
-        [HttpPost("Search")]
-        public async Task<IActionResult> SearchDonation(DonationSearchCommand request)
+        [HttpGet("claimedbyOtherUser")]
+        public async Task<IActionResult> ViewClaimedDonationByOtherUser()
         {
-            var searchModel = await _donationService.SearchDonations(request);
-            if(searchModel.IsSuccessfull)
+            var claimed = await _donationService.ViewDonationsClaimedByOthers();
+            if (!claimed.IsSuccessfull)
             {
-                return Ok(searchModel.Data);
+                return Ok(claimed.Data);
             }
-            return BadRequest();
+            return Ok(claimed.Data);
         }
 
-        [HttpGet("AllUserDonations")]  
+
+
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchDonation([FromQuery] DonationSearchCommand request)
+        {
+            var searchModel = await _donationFilter.SearchDonations(request);
+            if (!searchModel.IsSuccessfull)
+            {
+                return Ok(searchModel);
+            }
+            return Ok(searchModel);
+        }
+
+        [HttpGet("AllSearch")]
+        public async Task<IActionResult> SearchAllDonation([FromQuery] DonationSearchCommand request)
+        {
+            var searchModel = await _donationFilter.AllDonationSearch(request);
+            if (!searchModel.IsSuccessfull)
+            {
+                return Ok(searchModel);
+            }
+            return Ok(searchModel);
+        }
+
+        [HttpGet("AllUserDonations")] 
         public async Task<IActionResult> GetAllDonationByUserAsync([FromQuery] PaginationFilter filter)
         {
             var route = Request.Path.Value;
-            var pagedResponse = await _donationService.DonationPageResponse(route, filter);
+            var pagedResponse = await _donationFilter.DonationPageResponse(route, filter);
             return Ok(pagedResponse);
         }
+
+        [HttpGet("AllUserClaimableDonations")] 
+        public async Task<IActionResult> GetAllClaimableDonationByUserAsync([FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var pagedResponse = await _donationFilter.ClaimableDonationPageResponse(route, filter);
+            return Ok(pagedResponse);
+        }
+
+
+        [HttpGet("GetAllDOnationCount")]
+        public async Task<IActionResult> GetAllDonationCount()
+        {
+            var pendingCount = await _logisticsService.AllPendingCountAsync();    
+            var approveCount = await _logisticsService.AllApprovedCountAsync();
+            var disapproveCount = await _logisticsService.AllDisapprovedCountAsync();
+            var expiredCount = await _logisticsService.AllExpiredCountAsync();
+            var claimedCount = await _logisticsService.AllClaimedCountAsync();
+            var receivedCount = await _logisticsService.AllReceivedCountAsync();
+
+            var model = new DonationCountCommandModel
+            {
+                ApproveCount = approveCount,
+                DisapproveCount = disapproveCount,
+                PendingCount = pendingCount,
+                ClaimedCount = claimedCount,
+                ExpiredCount = expiredCount,
+                ReceivedCount = receivedCount,
+            };
+            return Ok(model);
+        }
+
+        
 
     }
 }
