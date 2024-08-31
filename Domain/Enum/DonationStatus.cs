@@ -13,6 +13,7 @@ namespace Domain.Enum
         Disapprove,
         Available,
         Claim,
-        Received
+        Received,
+        Expired
     }
 }
