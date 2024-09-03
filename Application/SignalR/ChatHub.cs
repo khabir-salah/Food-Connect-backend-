@@ -39,31 +39,25 @@ namespace Application.SignalR
 
             var message = new Message
             {
+                DonationId = request.donationId,
                 Content = request.content,
-                DonationId = donation.Id,
-                DonorId = donation.UserId,
-                IsRead = false,
+                SentAt = DateTime.UtcNow,
+                UserId = request.UserId,
                 RecipientId = (Guid)donation.Recipient,
-                SentAt = DateTime.UtcNow 
+                DonorId = request.donationId,
             };
 
             _messageRepo.Add(message);
             _messageRepo.Save();
+
             var messageData = new
             {
                 Message = message.Content,
-                DonationId = message.DonationId,
-                DonorId = message.DonorId,
-                IsRead = message.IsRead,
-                RecipientId = message.RecipientId,
-                Timestamp = message.SentAt.ToString("g")
+                Timestamp = message.SentAt.ToString("g"),
+                UserId = request.UserId,
             };
 
-            
-
             await Clients.Group(donation.Id.ToString()).SendAsync("ReceiveMessage", messageData);
-
-           
         }
        
     }

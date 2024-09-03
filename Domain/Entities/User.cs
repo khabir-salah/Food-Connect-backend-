@@ -15,6 +15,5 @@ namespace Domain.Entities
         public string? Name { get; set; }
         public bool IsActivated { get; set; } 
         public virtual Role Role { get; set; }
-
     }
 }

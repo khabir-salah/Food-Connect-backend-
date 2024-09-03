@@ -147,18 +147,18 @@ namespace Application.Features.Queries.Get
             var recipient = await _user.LoggedInUser();
             var donation = await _donationRepo.Get(d => d.Id == id);
 
-            var lastClaim = await _donationRepo.GetLastClaimByUser(recipient.Id);
-            if (lastClaim != null)
-            {
-                var timeSinceLastClaim = DateTime.UtcNow - lastClaim.LastClaimTime.Value;
-                if (timeSinceLastClaim.TotalHours < 5)
-                {
-                    return new BaseResponse<string>
-                    {
-                        IsSuccessfull = false,
-                    };
-                }
-            }
+            //var lastClaim = await _donationRepo.GetLastClaimByUser(recipient.Id);
+            //if (lastClaim != null)
+            //{
+            //    var timeSinceLastClaim = DateTime.UtcNow - lastClaim.LastClaimTime.Value;
+            //    if (timeSinceLastClaim.TotalHours < 5)
+            //    {
+            //        return new BaseResponse<string>
+            //        {
+            //            IsSuccessfull = false,
+            //        };
+            //    }
+            //}
 
             donation.Recipient = recipient.Id;
             var newStatus = donation.Status = Domain.Enum.DonationStatus.Claim;

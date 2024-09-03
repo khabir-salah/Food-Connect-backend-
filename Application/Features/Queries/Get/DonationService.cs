@@ -320,6 +320,7 @@ namespace Application.Features.Queries.Get
                 Status = donation.Status,
                 DonationId = donation.Id,
                 UserId = donation.UserId,
+                RecipientId = (Guid)donation.Recipient,
             };
         }
 

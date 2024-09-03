@@ -43,10 +43,10 @@ namespace Application.Features.Queries.Get
                     DonorId = userMessage.DonorId,
                     Content = userMessage.Content,
                     DonationId = userMessage.DonationId,
-                    IsRead = userMessage.IsRead,
                     RecipientId = recipientId,
                     SentAt = userMessage.SentAt,
-                }
+                    UserId = userMessage.UserId
+                }   
             };
         }
 
@@ -66,9 +66,9 @@ namespace Application.Features.Queries.Get
                 DonorId = s.DonorId,
                 Content = s.Content,
                 DonationId = s.DonationId,
-                IsRead = s.IsRead,
                 RecipientId = s.RecipientId,
                 SentAt = s.SentAt,
+                UserId = s.UserId
             }).ToList();
         }
 
@@ -94,7 +94,6 @@ namespace Application.Features.Queries.Get
             var message = await _messageRepo.Get(m => m.DonationId == donationId);
             if (message != null)
             {
-                message.IsRead = true;
                 _messageRepo.Update(message);
                 _messageRepo.Save(); 
                 return true;
