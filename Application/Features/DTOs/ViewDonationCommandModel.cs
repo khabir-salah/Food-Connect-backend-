@@ -44,6 +44,7 @@ namespace Application.Features.DTOs
             public string ClaimRestrictionReason { get; set; }
             public Guid DonationId { get; set; }
             public Guid UserId { get; set; }
+            public Guid RecipientId { get; set; }
 
         }
 

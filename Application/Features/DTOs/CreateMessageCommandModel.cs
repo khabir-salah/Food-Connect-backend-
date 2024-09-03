@@ -8,6 +8,7 @@ namespace Application.Features.DTOs
     {
       
         public Guid donationId { get; set; }
+        public Guid UserId { get; set; }
         public string content { get; set; }
        
     }
