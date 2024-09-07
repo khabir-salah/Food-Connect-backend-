@@ -23,11 +23,11 @@ namespace Application.Features.Queries.Get
             _user = user;
         }
 
-        public async Task<PagedResponse<ICollection<DonationResponseCommandModel>>> GetAllDonationsForUser()
+        public async Task<BaseResponse<ICollection<DonationResponseCommandModel>>> GetAllDonationsForUser()
         {
             PaginationFilter filter = new PaginationFilter();
             var loggedinUser = await _user.LoggedInUser();
-            var allDonations = await _donationRepo.GetAllDonationByPage(filter);
+            var allDonations = await _donationRepo.GetAllDonationByPage();
             var available = allDonations.Where(s => s.Status == Domain.Enum.DonationStatus.Available || s.Status == Domain.Enum.DonationStatus.Approve);
             await ExpireDonations();
 
@@ -54,9 +54,7 @@ namespace Application.Features.Queries.Get
                 };
             }).ToList();
 
-            var totalRecords = await _donationRepo.CountAsync(Domain.Enum.DonationStatus.Approve);
-
-            return new PagedResponse<ICollection<DonationResponseCommandModel>>(donationsWithClaimStatus, filter.PageNumber, filter.PageSize, totalRecords)
+            return new BaseResponse<ICollection<DonationResponseCommandModel>>
             {
                 IsSuccessfull = true,
                 Message = "All Available Donations",
@@ -118,14 +116,14 @@ namespace Application.Features.Queries.Get
             return "You are not eligible to claim this donation.";
         }
 
-        public async Task<PagedResponse<ICollection<DonationResponseCommandModel>>> SearchDonations(DonationSearchCommand request)
+        public async Task<BaseResponse<ICollection<DonationResponseCommandModel>>> SearchDonations(DonationSearchCommand request)
         {
             var loggedinUser = await _user.LoggedInUser();
-            var donations = await _donationRepo.GetAllDonationByPage(request.Filter);
+            var donations = await _donationRepo.GetAllDonationByPage();
 
             if(!donations.Any())
             {
-                return new PagedResponse<ICollection<DonationResponseCommandModel>>(new List<DonationResponseCommandModel>(), request.Filter.PageNumber, request.Filter.PageSize, 0)
+                return new BaseResponse<ICollection<DonationResponseCommandModel>>
                 {
                     IsSuccessfull = false,
                     Message = "Filtered Donations",

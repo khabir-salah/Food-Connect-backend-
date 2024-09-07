@@ -33,7 +33,7 @@ namespace Application.Features.Queries.Get
 
         public async Task<PagedResponse<ICollection<DonationResponseCommandModel>>> PageResponse(string route, ViewDonationCommandModel.DonationCommand request)
         {
-            var filter = new PaginationFilter(request.filter.PageNumber, request.filter.PageSize);
+            var filter = new PaginationFilter();
             var pagedData = await _mediator.Send(request);
             var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.Data, filter, _uriService, route);
             return pagedResponse;

@@ -14,7 +14,6 @@ namespace Application.Features.Queries.Get
     {
         private readonly IUserRepository _userRepo;
         private readonly IUriService _uriService;
-        private readonly IManagerRepository _managerRepo;
         private readonly IIndividualRepository _individualRepo;
         private readonly IOragnisationRepository _oragnisationRepo;
         private readonly IDonationRepository _donationRepo;

@@ -11,10 +11,9 @@ namespace Application.Features.DTOs
 {
     public class ViewDonationCommandModel
     {
-        public record DonationCommand : IRequest<PagedResponse<ICollection<DonationResponseCommandModel>>>
+        public record DonationCommand : IRequest<BaseResponse<ICollection<DonationResponseCommandModel>>>
         {
             public int status {  get; set; } 
-            public PaginationFilter? filter { get; set; } = new PaginationFilter();
         }
 
         public record DonationResponseCommandModel
